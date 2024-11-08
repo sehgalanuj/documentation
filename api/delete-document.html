@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GET - document_pagination</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+            <section id="endpoint-delete-document">
+                <h2>DELETE - document</h2>
+                <p>This endpoint deletes the specified document. It is important to note that only incomplete documents may be deleted using this endpoint. Once a document reaches the compled status, it is locked for security reasons and may never be deleted via the UI or API. This document may only be deleted by setting up a retention policy that will automatically delete documents after a certain period of time. You must speak with your account manager to get such a retention policy enabled.</p>
+                <h3>Request</h3>
+                <p><strong>URL:</strong> {{url}}/document?id={{document_id}}</p>
+                <p><strong>HTTP Request Type:</strong> DELETE</p>
+
+                <h3>Headers</h3>
+                <table class="header-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">x-access-token</code></td>
+                        <td>String</td>
+                        <td>Access token for authentication <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code class="required">Content-Type</code></td>
+                        <td>String</td>
+                        <td>Content type of the request, should be <code>application/json</code> <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <h3>Query Parameters</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">id</code></td>
+                        <td>Integer</td>
+                        <td>Document ID <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl -X DELETE "{{url}}/document?id=17" -H "x-access-token: {{access_token}}" -H "Content-Type: application/json"</code></pre>
+
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+
+url = "{{url}}/document"
+params = {
+    "id": 17
+}
+headers = {
+    "x-access-token": "{{access_token}}",
+    "Content-Type": "application/json"
+}
+
+response = requests.delete(url, headers=headers, params=params)
+print(response.json())</code></pre>
+
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">fetch("{{url}}/document?id=17", {
+    method: 'DELETE',
+    headers: {
+        'x-access-token': '{{access_token}}',
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data));</code></pre>
+                </div>
+            </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+  </body>
+</html>

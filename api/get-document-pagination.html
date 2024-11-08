@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GET - document_pagination</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">    
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <section id="endpoint-document-pagination">
+      <h2>GET - document_pagination</h2>
+      <p>This endpoint is used to fetch a paginated list of documents.</p>
+      <h3>Request</h3>
+      <p><strong>URL:</strong> {{url}}/document_pagination?page_size=50&page=1&completed=false</p>
+      <p><strong>HTTP Request Type:</strong> GET</p>
+
+      <h3>Headers</h3>
+      <table class="header-table">
+        <tr>
+          <th>Header</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><code class="required">x-access-token</code></td>
+          <td>String</td>
+          <td>Access token for authentication <span class="required">(required)</span></td>
+        </tr>
+        <tr>
+          <td><code class="required">Content-Type</code></td>
+          <td>String</td>
+          <td>Content type of the request, should be <code>application/json</code> <span class="required">(required)</span></td>
+        </tr>
+      </table>
+
+      <h3>Query Parameters</h3>
+      <table class="parameter-table">
+        <tr>
+          <th>Parameter</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><code class="required">page_size</code></td>
+          <td>Integer</td>
+          <td>Number of documents per page <span class="required">(required)</span></td>
+        </tr>
+        <tr>
+          <td><code class="required">page</code></td>
+          <td>Integer</td>
+          <td>Page number <span class="required">(required)</span></td>
+        </tr>
+        <tr>
+          <td><code class="required">completed</code></td>
+          <td>Boolean</td>
+          <td>Filter by completion status <span class="required">(required)</span></td>
+        </tr>
+        <tr>
+          <td><code>deleted</code></td>
+          <td>Boolean</td>
+          <td>Include deleted documents</td>
+        </tr>
+        <tr>
+          <td><code>search</code></td>
+          <td>String</td>
+          <td>Search query for documents</td>
+        </tr>
+        <tr>
+          <td><code>order</code></td>
+          <td>String</td>
+          <td>Order of documents (e.g., id,desc)</td>
+        </tr>
+        <tr>
+          <td><code>group_filter</code></td>
+          <td>String</td>
+          <td>Filter by group IDs</td>
+        </tr>
+        <tr>
+          <td><code>assign_to_user</code></td>
+          <td>String</td>
+          <td>Filter by assigned user</td>
+        </tr>
+        <tr>
+          <td><code>priority</code></td>
+          <td>String</td>
+          <td>Filter by priority</td>
+        </tr>
+        <tr>
+          <td><code>date_begin</code></td>
+          <td>Date</td>
+          <td>Filter by start date</td>
+        </tr>
+        <tr>
+          <td><code>date_end</code></td>
+          <td>Date</td>
+          <td>Filter by end date</td>
+        </tr>
+        <tr>
+          <td><code>archived</code></td>
+          <td>Boolean</td>
+          <td>Include archived documents</td>
+        </tr>
+        <tr>
+          <td><code>tags</code></td>
+          <td>Integer</td>
+          <td>Filter by tag ID</td>
+        </tr>
+        <tr>
+          <td><code>in_folder</code></td>
+          <td>String</td>
+          <td>Filter by folder</td>
+        </tr>
+      </table>
+
+      <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl -X GET "{{url}}/document_pagination?page_size=50&page=1&completed=false" -H "x-access-token: {{access_token}}" -H "Content-Type: application/json"</code></pre>
+
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+
+url = "{{url}}/document_pagination"
+params = {
+    "page_size": 50,
+    "page": 1,
+    "completed": False
+}
+headers = {
+    "x-access-token": "{{access_token}}",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())</code></pre>
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">fetch("{{url}}/document_pagination?page_size=50&page=1&completed=false", {
+    method: 'GET',
+    headers: {
+        'x-access-token': '{{access_token}}',
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data));</code></pre>
+                </div>
+
+                <button type="button" class="collapsible">Sample Response</button>
+                <div class="content">
+                    <pre><code class="language-json">{
+    "documents": [
+        {
+            "archived": false,
+            "cache_allowed_action_users": [
+                12,
+                18
+            ],
+            "cache_current_step": "Approval Stage",
+            "cache_history_last_modified": "2023-05-11T12:34:56.789Z",
+            "cache_history_last_user": "John Doe",
+            "cache_history_status": "approved",
+            "completed": false,
+            "deleted_date": null,
+            "file_extension": "pdf",
+            "group_name": [
+                "Finance"
+            ],
+            "id": 1234,
+            "name": "Quarterly Report Q1 2023",
+            "priority": "high",
+            "source_name": "Document template",
+            "tag_name": [],
+            "workflow_name": "Quarterly Review"
+        },
+        {
+            "archived": false,
+            "cache_allowed_action_users": [
+                22
+            ],
+            "cache_current_step": "Review Stage",
+            "cache_history_last_modified": "2023-06-15T09:21:34.567Z",
+            "cache_history_last_user": "Jane Smith",
+            "cache_history_status": "under review",
+            "completed": false,
+            "deleted_date": null,
+            "file_extension": "docx",
+            "group_name": [
+                "Marketing"
+            ],
+            "id": 5678,
+            "name": "Marketing Plan 2023",
+            "priority": "medium",
+            "source_name": "Document template",
+            "tag_name": [],
+            "workflow_name": "Annual Planning"
+        }
+    ],
+    "pending_docs": 1,
+    "total_docs": 25
+}</code></pre>
+		</div>
+		
+      <h3>Response Structure</h3>
+      <table class="response-table">
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><code>documents</code></td>
+          <td>Array</td>
+          <td>List of document objects</td>
+        </tr>
+        <tr>
+          <td><code>documents[].archived</code></td>
+          <td>Boolean</td>
+          <td>Indicates if the document is archived</td>
+        </tr>
+        <tr>
+          <td><code>documents[].cache_allowed_action_users</code></td>
+          <td>Array of Integers</td>
+          <td>List of user IDs allowed to perform actions</td>
+        </tr>
+        <tr>
+          <td><code>documents[].cache_current_step</code></td>
+          <td>String</td>
+          <td>Current step in the workflow</td>
+        </tr>
+        <tr>
+          <td><code>documents[].cache_history_last_modified</code></td>
+          <td>String (ISO 8601 datetime)</td>
+          <td>Last modification date and time</td>
+        </tr>
+        <tr>
+          <td><code>documents[].cache_history_last_user</code></td>
+          <td>String</td>
+          <td>Last user who modified the document</td>
+        </tr>
+        <tr>
+          <td><code>documents[].cache_history_status</code></td>
+          <td>String</td>
+          <td>Current status of the document in the workflow</td>
+        </tr>
+        <tr>
+          <td><code>documents[].completed</code></td>
+          <td>Boolean</td>
+          <td>Indicates if the document is completed</td>
+        </tr>
+        <tr>
+          <td><code>documents[].deleted_date</code></td>
+          <td>String (ISO 8601 datetime) or null</td>
+          <td>Date and time when the document was deleted, or null if not deleted</td>
+        </tr>
+        <tr>
+          <td><code>documents[].file_extension</code></td>
+          <td>String</td>
+          <td>File extension of the document</td>
+        </tr>
+        <tr>
+          <td><code>documents[].group_name</code></td>
+          <td>Array of Strings</td>
+          <td>List of group names associated with the document</td>
+        </tr>
+        <tr>
+          <td><code>documents[].id</code></td>
+          <td>Integer</td>
+          <td>Unique identifier for the document</td>
+        </tr>
+        <tr>
+          <td><code>documents[].name</code></td>
+          <td>String</td>
+          <td>Name of the document</td>
+        </tr>
+        <tr>
+          <td><code>documents[].priority</code></td>
+          <td>String</td>
+          <td>Priority level of the document</td>
+        </tr>
+        <tr>
+          <td><code>documents[].source_name</code></td>
+          <td>String</td>
+          <td>Source of the document</td>
+        </tr>
+        <tr>
+          <td><code>documents[].tag_name</code></td>
+          <td>Array</td>
+          <td>List of tags associated with the document</td>
+        </tr>
+        <tr>
+          <td><code>documents[].workflow_name</code></td>
+          <td>String</td>
+          <td>Name of the workflow the document is part of</td>
+        </tr>
+        <tr>
+          <td><code>pending_docs</code></td>
+          <td>Integer</td>
+          <td>Number of pending documents</td>
+        </tr>
+        <tr>
+          <td><code>total_docs</code></td>
+          <td>Integer</td>
+          <td>Total number of documents</td>
+        </tr>
+      </table>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>    
+  </body>
+</html>

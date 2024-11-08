@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+        <section id="introduction">
+            <h1>Introduction</h1>
+            <p>This API documentation provides information about DocQ API endpoints that allows you to interact with the DocQ service to fetch a list of documents, get details of a specific document, download documents (or its individual file versions), and delete incomplete documents.</p>
+	    <p>An important terminology to understand here is that <em>document</em> is essentially a container used by DocQ to bundle files, their versions and related data together. Within a document you may have several <em>files</em> which are basically individual versions that were created during the lifecycle of a document.</p>
+	    <p>Another important thing to note is that once a document reaches the <em>complete</em> status, it is for all essential purposes locked. You may no longer manipulate this doucment under normal circumstances. One exception is a retention policy that would then allow for documents to be automatically purged after a certain amount of time.</p>
+        </section>
+
+        <section id="authentication">
+            <h1>Authentication</h1>
+            <p>All API requests must include the <code class="required">x-access-token</code> header with a valid access token. This token is used to authenticate and authorize your requests.</p>
+	    <p>You can obtain this token by logging into the DocQ front-end for your instance, then navigating to <em>Settings</em> -> <em>Plugins</em> -> <em>DocQ integration tokens</em> and then clicking <em>Add token</em> to generate a new token.</p>
+<center><img src="key.gif" width="70%"></center>
+        </section>
+
+        <section id="endpoints">
+            <h1>Endpoints</h1>
+
+            <p>Throughout this documentation, you will see the placeholder <code>{{url}}</code>. Replace <code>{{url}}</code> with your specific DocQ domain. For example, if your domain is <code>ndm.docq.app</code>, replace <code>{{url}}</code> with <code>https://ndm.docq.app/api</code>.</p>
+
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

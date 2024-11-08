@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GET - document_pagination</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+            <section id="endpoint-document-download">
+                <h2>GET - document-download</h2>
+                <p>This endpoint downloads the specified document in binary format. You may use the document information (<em>GET - document</em> endpoint) to assign a filename, or create a custom one based on the details of the document itself. Use the file ID, along with the document ID, to download a specific version of the document.</p>
+                <h3>Request</h3>
+                <p><strong>URL:</strong> {{url}}/document/download?id={{document_id}}</p>
+                <p><strong>HTTP Request Type:</strong> GET</p>
+
+                <h3>Headers</h3>
+                <table class="header-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">x-access-token</code></td>
+                        <td>String</td>
+                        <td>Access token for authentication <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <h3>Query Parameters</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">id</code></td>
+                        <td>Integer</td>
+                        <td>Document ID <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>file_id</code></td>
+                        <td>String</td>
+                        <td>File ID (optional)</td>
+                    </tr>
+                </table>
+
+                <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl -X GET "{{url}}/document/download?id=644" -H "x-access-token: {{access_token}}"</code></pre>
+
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+
+url = "{{url}}/api/document/download"
+params = {
+    "id": 644
+}
+headers = {
+    "x-access-token": "{{access_token}}"
+}
+
+response = requests.get(url, headers=headers, params=params)
+with open('document.pdf', 'wb') as file:
+    file.write(response.content)</code></pre>
+
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">fetch("{{url}}/api/document/download?id=644", {
+    method: 'GET',
+    headers: {
+        'x-access-token': '{{access_token}}'
+    }
+})
+.then(response => response.blob())
+.then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'document.pdf';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+});</code></pre>
+                </div>
+            </section>
+	    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+  </body>
+</html>
