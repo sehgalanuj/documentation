@@ -1,8 +1,0 @@
-API Documentation
-SSO Documentation
-
-Welcome to the DocQ Documentation
-This documentation has been assembled to help you get the most out of DocQ, especially for advanced use-cases.
-Note: The API is not an open API. You will need to request access to use it via your account manager, or support.
-Go to API Documentation Go to SSO Documentation
-© 2024 DocQ - NDM Global Inc. All rights reserved.
