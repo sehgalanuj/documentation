@@ -9,6 +9,7 @@ RUN mkdir -p /usr/share/nginx/html/api
 COPY ./api/index.html /usr/share/nginx/html/api
 COPY ./api/get-document.html /usr/share/nginx/html/api
 COPY ./api/styles.css /usr/share/nginx/html/api
+COPY ./api/codeblock.css /usr/share/nginx/html/api
 COPY ./api/copyButton.js /usr/share/nginx/html/api
 COPY ./api/delete-document.html /usr/share/nginx/html/api
 COPY ./api/post-create-from-template.html /usr/share/nginx/html/api
