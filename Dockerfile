@@ -9,11 +9,11 @@ RUN mkdir -p /usr/share/nginx/html/api
 COPY ./api/index.html /usr/share/nginx/html/api
 COPY ./api/get-document.html /usr/share/nginx/html/api
 COPY ./api/styles.css /usr/share/nginx/html/api
-COPY ./api/codeblock.css /usr/share/nginx/html/api
 COPY ./api/copyButton.js /usr/share/nginx/html/api
 COPY ./api/delete-document.html /usr/share/nginx/html/api
 COPY ./api/post-create-from-template.html /usr/share/nginx/html/api
 COPY ./api/logo.jpg /usr/share/nginx/html/api
+COPY ./api/codeblock.css /usr/share/nginx/html/api
 COPY ./api/get-document-download.html /usr/share/nginx/html/api
 COPY ./api/key.gif /usr/share/nginx/html/api
 COPY ./api/create-document-form-metadata.jpg /usr/share/nginx/html/api
@@ -21,6 +21,7 @@ COPY ./api/create-document-form.jpg /usr/share/nginx/html/api
 COPY ./api/create-document-template.jpg /usr/share/nginx/html/api
 COPY ./api/introduction.html /usr/share/nginx/html/api
 COPY ./api/get-document-pagination.html /usr/share/nginx/html/api
+COPY ./api/accordion.css /usr/share/nginx/html/api
 
 RUN mkdir -p /usr/share/nginx/html/sso
 COPY ./sso/docq-okta-sso.png /usr/share/nginx/html/sso
