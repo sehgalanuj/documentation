@@ -25,6 +25,7 @@ nav.top-nav a {
 }
 nav.top-nav a:hover {
     text-decoration: underline;
+    cursor: pointer;
 }
 nav.side-nav {
     background-color: #0a1f42;
