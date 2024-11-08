@@ -6,58 +6,71 @@
     <title>DocQ API Documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
-    <link rel="stylesheet" href="styles.css">    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="accordion.css">
 </head>
 <body>
-    <nav class="top-nav">
-        <div>
-            <a href="/api">API Documentation</a>
-            <a href="/sso">SSO Documentation</a>
-        </div>
-    </nav>
+  <nav class="top-nav">
+    <div>
+      <a href="/api">API Documentation</a>
+      <a href="/sso">SSO Documentation</a>
+    </div>
+  </nav>
+  
   <nav class="side-nav">
     <center><img src="logo.jpg" width="50%">
-        <h2>API Documentation</h2></center>
-        <a href="introduction.html#introduction" target="iframe-content">Introduction</a>
-        <a href="introduction.html#authentication" target="iframe-content">Authentication</a>
-        <a href="introduction.html#endpoints" target="iframe-content">Endpoints</a>
-        <div class="submenu">
-            <a href="get-document-pagination.html" target="iframe-content">GET - document_pagination</a>
-            <a href="get-document.html" target="iframe-content">GET - document</a>
-            <a href="get-document-download.html" target="iframe-content">GET - document-download</a>
-            <a href="post-create-from-template.html" target="iframe-content">POST - createFromTemplate</a>
-            <a href="delete-document.html" target="iframe-content">DELETE - document</a>
-        </div>
-    </nav>
-    <main>
-      <iframe name="iframe-content" src="introduction.html" 
-              style="width: 100%; height: calc(100vh - 120px); border: none; margin-top: 0px;"></iframe>
-    </main>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+      <h2>API Documentation</h2></center>
+    <a href="introduction.html#introduction" target="iframe-content">Introduction</a>
+    <a href="introduction.html#authentication" target="iframe-content">Authentication</a>
+    <a href="introduction.html#endpoints" target="iframe-content">Endpoints</a>
+    
+    <!-- Accordion Structure for Documents Submenu -->
+    <div class="accordion-section">
+      <a class="accordion-link">
+	<span class="accordion-icon">+</span> Documents
+      </a>
+      <div class="accordion-content" style="display: none;">
+	<ul>
+	  <li><a href="get-document-pagination.html" target="iframe-content">GET - document_pagination</a></li>
+	  <li><a href="get-document.html" target="iframe-content">GET - document</a></li>
+	  <li><a href="get-document-download.html" target="iframe-content">GET - document-download</a></li>
+	  <li><a href="post-create-from-template.html" target="iframe-content">POST - createFromTemplate</a></li>
+	  <li><a href="delete-document.html" target="iframe-content">DELETE - document</a></li>
+	</ul>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <iframe name="iframe-content" src="introduction.html"
+            style="width: 100%; height: calc(100vh - 120px); border: none; margin-top: 0px;"></iframe>
+  </main>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+  
     <script>
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleLink = document.querySelector(".accordion-link");
+            const content = document.querySelector(".accordion-content");
+            const icon = toggleLink.querySelector(".accordion-icon");
 
-        for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
+            toggleLink.addEventListener("click", function(event) {
+                event.preventDefault(); // Prevent link navigation
+
+                // Toggle visibility of the accordion content
+                if (content.style.display === "none") {
                     content.style.display = "block";
+                    icon.textContent = "-"; // Change icon to "-" when expanded
+                } else {
+                    content.style.display = "none";
+                    icon.textContent = "+"; // Change icon back to "+" when collapsed
                 }
             });
-        }
+        });
     </script>
 </body>
-<footer style="background-color: #0a1f42; color: white; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; left: 0;">
-    &copy; 2024 DocQ - NDM Global Inc. All rights reserved.
-</footer>
 </html>
