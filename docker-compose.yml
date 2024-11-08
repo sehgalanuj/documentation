@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  web:
+    image: sehgalanuj/docq-documentation:latest
+    container_name: docq-documentation
+    ports:
+      - 8888:80

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocQ Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: space-between;
+        }
+        nav.top-nav {
+            background-color: #0a1f42;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        nav.top-nav a {
+            text-decoration: none;
+            color: white;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+        nav.top-nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            margin-top: 60px;
+            padding: 20px;
+            flex: 1;
+            text-align: center;
+        }
+        h1 {
+            color: #0a1f42;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #0a1f42;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #34495e;
+        }
+        footer {
+            background-color: #0a1f42;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="/api">API Documentation</a>
+        <a href="/sso">SSO Documentation</a>
+    </nav>
+    <main>
+        <center><img src="logo.jpg" width="25%"></center>
+        <h1>Welcome to the DocQ Documentation</h1>
+        <p>This documentation has been assembled to help you get the most out of DocQ, especially for advanced use-cases.</p>
+        <p>Note: The API is not an open API. You will need to request access to use it via your account manager, or support.</p>
+        <a href="/api" class="button">Go to API Documentation</a>
+        <a href="/sso" class="button">Go to SSO Documentation</a>
+    </main>
+    <footer>
+        &copy; 2024 DocQ - NDM Global Inc. All rights reserved.
+    </footer>
+</body>
+</html>

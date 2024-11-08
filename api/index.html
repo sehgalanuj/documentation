@@ -1,0 +1,2374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocQ API Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        nav.top-nav {
+            background-color: #0a1f42;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 270px;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav.top-nav a {
+            text-decoration: none;
+            color: white;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+        nav.top-nav a:hover {
+            text-decoration: underline;
+        }
+        nav.side-nav {
+            background-color: #0a1f42;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 270px;
+            overflow: auto;
+            z-index: 1000;
+        }
+        nav.side-nav a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 10px;
+            border-bottom: 1px solid #34495e;
+        }
+        nav.side-nav a:hover {
+            background-color: #34495e;
+        }
+        nav.side-nav .submenu a {
+            padding-left: 30px;
+        }
+        main {
+            margin-left: 270px;
+            padding: 60px 20px 20px 20px;
+            flex: 1;
+        }
+        h1, h2, h3, h4 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        section {
+            margin-bottom: 40px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        .parameter-table, .header-table, .response-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .parameter-table th, .parameter-table td, .header-table th, .header-table td, .response-table th, .response-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .parameter-table th, .header-table th, .response-table th {
+            background-color: #f2f2f2;
+        }
+        .required {
+            font-weight: bold;
+            color: red;
+        }
+        .collapsible {
+            background-color: #2c3e50;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+        .active, .collapsible:hover {
+            background-color: #34495e;
+        }
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f9f9f9;
+        }
+        @media (max-width: 767px) {
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            nav .submenu {
+                display: none;
+            }
+            nav a {
+                margin: 5px 0;
+                padding: 10px;
+                border-bottom: 1px solid #34495e;
+            }
+            nav .submenu a {
+                padding-left: 15px;
+            }
+            main {
+                margin-left: 0;
+                margin-top: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div>
+            <a href="/api">API Documentation</a>
+            <a href="/sso">SSO Documentation</a>
+        </div>
+    </nav>
+  <nav class="side-nav">
+    <center><img src="logo.jpg" width="50%">
+        <h2>API Documentation</h2></center>
+        <a href="#introduction">Introduction</a>
+        <a href="#authentication">Authentication</a>
+        <a href="#endpoints">Endpoints</a>
+        <div class="submenu">
+            <a href="#endpoint-document-pagination">GET - document_pagination</a>
+            <a href="#endpoint-document">GET - document</a>
+            <a href="#endpoint-document-download">GET - document-download</a>
+            <a href="#endpoint-delete-document">DELETE - document</a>
+        </div>
+    </nav>
+    <main>
+        <section id="introduction">
+            <h1>Introduction</h1>
+            <p>This API documentation provides information about DocQ API endpoints that allows you to interact with the DocQ service to fetch a list of documents, get details of a specific document, download documents (or its individual file versions), and delete incomplete documents.</p>
+	    <p>An important terminology to understand here is that <em>document</em> is essentially a container used by DocQ to bundle files, their versions and related data together. Within a document you may have several <em>files</em> which are basically individual versions that were created during the lifecycle of a document.</p>
+	    <p>Another important thing to note is that once a document reaches the <em>complete</em> status, it is for all essential purposes locked. You may no longer manipulate this doucment under normal circumstances. One exception is a retention policy that would then allow for documents to be automatically purged after a certain amount of time.</p>
+        </section>
+
+        <section id="authentication">
+            <h1>Authentication</h1>
+            <p>All API requests must include the <code class="required">x-access-token</code> header with a valid access token. This token is used to authenticate and authorize your requests.</p>
+	    <p>You can obtain this token by logging into the DocQ front-end for your instance, then navigating to <em>Settings</em> -> <em>Plugins</em> -> <em>DocQ integration tokens</em> and then clicking <em>Add token</em> to generate a new token.</p>
+<center><img src="key.gif" width="70%"></center>
+        </section>
+
+        <section id="endpoints">
+            <h1>Endpoints</h1>
+
+            <p>Throughout this documentation, you will see the placeholder <code>{{url}}</code>. Replace <code>{{url}}</code> with your specific DocQ domain. For example, if your domain is <code>ndm.docq.app</code>, replace <code>{{url}}</code> with <code>https://ndm.docq.app/api</code>.</p>
+
+            <section id="endpoint-document-pagination">
+                <h2>GET - document_pagination</h2>
+                <p>This endpoint is used to fetch a paginated list of documents.</p>
+                <h3>Request</h3>
+                <p><strong>URL:</strong> {{url}}/document_pagination?page_size=50&page=1&completed=false</p>
+                <p><strong>HTTP Request Type:</strong> GET</p>
+
+                <h3>Headers</h3>
+                <table class="header-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">x-access-token</code></td>
+                        <td>String</td>
+                        <td>Access token for authentication <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code class="required">Content-Type</code></td>
+                        <td>String</td>
+                        <td>Content type of the request, should be <code>application/json</code> <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <h3>Query Parameters</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">page_size</code></td>
+                        <td>Integer</td>
+                        <td>Number of documents per page <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code class="required">page</code></td>
+                        <td>Integer</td>
+                        <td>Page number <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code class="required">completed</code></td>
+                        <td>Boolean</td>
+                        <td>Filter by completion status <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>deleted</code></td>
+                        <td>Boolean</td>
+                        <td>Include deleted documents</td>
+                    </tr>
+                    <tr>
+                        <td><code>search</code></td>
+                        <td>String</td>
+                        <td>Search query for documents</td>
+                    </tr>
+                    <tr>
+                        <td><code>order</code></td>
+                        <td>String</td>
+                        <td>Order of documents (e.g., id,desc)</td>
+                    </tr>
+                    <tr>
+                        <td><code>group_filter</code></td>
+                        <td>String</td>
+                        <td>Filter by group IDs</td>
+                    </tr>
+                    <tr>
+                        <td><code>assign_to_user</code></td>
+                        <td>String</td>
+                        <td>Filter by assigned user</td>
+                    </tr>
+                    <tr>
+                        <td><code>priority</code></td>
+                        <td>String</td>
+                        <td>Filter by priority</td>
+                    </tr>
+                    <tr>
+                        <td><code>date_begin</code></td>
+                        <td>Date</td>
+                        <td>Filter by start date</td>
+                    </tr>
+                    <tr>
+                        <td><code>date_end</code></td>
+                        <td>Date</td>
+                        <td>Filter by end date</td>
+                    </tr>
+                    <tr>
+                        <td><code>archived</code></td>
+                        <td>Boolean</td>
+                        <td>Include archived documents</td>
+                    </tr>
+                    <tr>
+                        <td><code>tags</code></td>
+                        <td>Integer</td>
+                        <td>Filter by tag ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>in_folder</code></td>
+                        <td>String</td>
+                        <td>Filter by folder</td>
+                    </tr>
+                </table>
+
+                <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl -X GET "{{url}}/document_pagination?page_size=50&page=1&completed=false" -H "x-access-token: {{access_token}}" -H "Content-Type: application/json"</code></pre>
+
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+
+url = "{{url}}/document_pagination"
+params = {
+    "page_size": 50,
+    "page": 1,
+    "completed": False
+}
+headers = {
+    "x-access-token": "{{access_token}}",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())</code></pre>
+
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">fetch("{{url}}/document_pagination?page_size=50&page=1&completed=false", {
+    method: 'GET',
+    headers: {
+        'x-access-token': '{{access_token}}',
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data));</code></pre>
+                </div>
+
+                <button type="button" class="collapsible">Sample Response</button>
+                <div class="content">
+                    <pre><code class="language-json">{
+    "documents": [
+        {
+            "archived": false,
+            "cache_allowed_action_users": [
+                12,
+                18
+            ],
+            "cache_current_step": "Approval Stage",
+            "cache_history_last_modified": "2023-05-11T12:34:56.789Z",
+            "cache_history_last_user": "John Doe",
+            "cache_history_status": "approved",
+            "completed": false,
+            "deleted_date": null,
+            "file_extension": "pdf",
+            "group_name": [
+                "Finance"
+            ],
+            "id": 1234,
+            "name": "Quarterly Report Q1 2023",
+            "priority": "high",
+            "source_name": "Document template",
+            "tag_name": [],
+            "workflow_name": "Quarterly Review"
+        },
+        {
+            "archived": false,
+            "cache_allowed_action_users": [
+                22
+            ],
+            "cache_current_step": "Review Stage",
+            "cache_history_last_modified": "2023-06-15T09:21:34.567Z",
+            "cache_history_last_user": "Jane Smith",
+            "cache_history_status": "under review",
+            "completed": false,
+            "deleted_date": null,
+            "file_extension": "docx",
+            "group_name": [
+                "Marketing"
+            ],
+            "id": 5678,
+            "name": "Marketing Plan 2023",
+            "priority": "medium",
+            "source_name": "Document template",
+            "tag_name": [],
+            "workflow_name": "Annual Planning"
+        }
+    ],
+    "pending_docs": 1,
+    "total_docs": 25
+}</code></pre>
+                </div>
+
+                <h3>Response Structure</h3>
+                <table class="response-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>documents</code></td>
+                        <td>Array</td>
+                        <td>List of document objects</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].archived</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if the document is archived</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].cache_allowed_action_users</code></td>
+                        <td>Array of Integers</td>
+                        <td>List of user IDs allowed to perform actions</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].cache_current_step</code></td>
+                        <td>String</td>
+                        <td>Current step in the workflow</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].cache_history_last_modified</code></td>
+                        <td>String (ISO 8601 datetime)</td>
+                        <td>Last modification date and time</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].cache_history_last_user</code></td>
+                        <td>String</td>
+                        <td>Last user who modified the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].cache_history_status</code></td>
+                        <td>String</td>
+                        <td>Current status of the document in the workflow</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].completed</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if the document is completed</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].deleted_date</code></td>
+                        <td>String (ISO 8601 datetime) or null</td>
+                        <td>Date and time when the document was deleted, or null if not deleted</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].file_extension</code></td>
+                        <td>String</td>
+                        <td>File extension of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].group_name</code></td>
+                        <td>Array of Strings</td>
+                        <td>List of group names associated with the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].id</code></td>
+                        <td>Integer</td>
+                        <td>Unique identifier for the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].name</code></td>
+                        <td>String</td>
+                        <td>Name of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].priority</code></td>
+                        <td>String</td>
+                        <td>Priority level of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].source_name</code></td>
+                        <td>String</td>
+                        <td>Source of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].tag_name</code></td>
+                        <td>Array</td>
+                        <td>List of tags associated with the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>documents[].workflow_name</code></td>
+                        <td>String</td>
+                        <td>Name of the workflow the document is part of</td>
+                    </tr>
+                    <tr>
+                        <td><code>pending_docs</code></td>
+                        <td>Integer</td>
+                        <td>Number of pending documents</td>
+                    </tr>
+                    <tr>
+                        <td><code>total_docs</code></td>
+                        <td>Integer</td>
+                        <td>Total number of documents</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section id="endpoint-document">
+                <h2>GET - document</h2>
+                <p>This endpoint retrieves the details of a specific document.</p>
+                <h3>Request</h3>
+                <p><strong>URL:</strong> {{url}}/document?id={{document_id}}</p>
+                <p><strong>HTTP Request Type:</strong> GET</p>
+
+                <h3>Headers</h3>
+                <table class="header-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">x-access-token</code></td>
+                        <td>String</td>
+                        <td>Access token for authentication <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code class="required">Content-Type</code></td>
+                        <td>String</td>
+                        <td>Content type of the request, should be <code>application/json</code> <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <h3>Query Parameters</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">id</code></td>
+                        <td>Integer</td>
+                        <td>Document ID <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>priority</code></td>
+                        <td>String</td>
+                        <td>Filter by priority (optional)</td>
+                    </tr>
+                    <tr>
+                        <td><code>gdoc_id</code></td>
+                        <td>String</td>
+                        <td>Google Document ID (optional)</td>
+                    </tr>
+                </table>
+
+                <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl -X GET "{{url}}/document?id=3003" -H "x-access-token: {{access_token}}" -H "Content-Type: application/json"</code></pre>
+
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+
+url = "{{url}}/document"
+params = {
+    "id": 3003
+}
+headers = {
+    "x-access-token": "{{access_token}}",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())</code></pre>
+
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">fetch("{{url}}/document?id=3003", {
+    method: 'GET',
+    headers: {
+        'x-access-token': '{{access_token}}',
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data));</code></pre>
+                </div>
+
+                <button type="button" class="collapsible">Sample Response</button>
+                <div class="content">
+                    <pre><code class="language-json">{
+    "document": [
+        {
+            "allowed_users": [],
+            "archived": false,
+            "aws_s3": false,
+            "completed": true,
+            "completed_at": "2023-06-26T18:07:57.894Z",
+            "current_status_description": "modified",
+            "current_status_id": 15,
+            "current_step": [],
+            "document_template_id": 117,
+            "docusign_block": false,
+            "docusign_id": null,
+            "email_file_copy": null,
+            "files": [
+                {
+                    "current_version": true,
+                    "digital_certificate": false,
+                    "extension": "pdf",
+                    "id": 7037,
+                    "ocr_status": "processing",
+                    "prev_file_id": 7036,
+                    "title": "PTO_Request_John_Doe_Personal_Time_Off_(PTO)_2023-06-26.pdf",
+                    "uid": "614fadb3-a3ca-4b3b-b1ce-b75637052e81",
+                    "uploaded": "Wed, 26 Jun 2023 18:06:47 GMT"
+                },
+                {
+                    "current_version": false,
+                    "digital_certificate": false,
+                    "extension": "docx",
+                    "id": 7036,
+                    "ocr_status": "processing",
+                    "prev_file_id": 7035,
+                    "title": "PTO_Request_John_Doe_Personal_Time_Off_(PTO)_2023-06-26.docx",
+                    "uid": "210a3fe2-cc97-49f6-8d2f-67ec125d984f",
+                    "uploaded": "Wed, 26 Jun 2023 15:52:35 GMT"
+                },
+                {
+                    "current_version": false,
+                    "digital_certificate": false,
+                    "extension": "docx",
+                    "id": 7035,
+                    "ocr_status": "processing",
+                    "prev_file_id": null,
+                    "title": "PTO_Request_John_Doe_Personal_Time_Off_(PTO)_2023-06-26.docx",
+                    "uid": "6abdeb36-1bc9-49c3-aa9d-6bffb62c04b1",
+                    "uploaded": "Wed, 26 Jun 2023 13:57:33 GMT"
+                }
+            ],
+            "folder_path": [
+                {
+                    "id": null,
+                    "name": "root"
+                },
+                {
+                    "id": 2,
+                    "name": "PTO requests"
+                }
+            ],
+            "gdoc_id": null,
+            "gdoc_version": null,
+            "history": [
+                {
+                    "checkin": "Wed, 26 Jun 2023 13:57:33 GMT",
+                    "checkout": "Wed, 26 Jun 2023 13:57:33 GMT",
+                    "external_user_id": null,
+                    "external_user_name": null,
+                    "macro_id": 1,
+                    "name": "Created by system",
+                    "notes": null,
+                    "status_description": "new version",
+                    "status_id": 1,
+                    "user_id": null,
+                    "user_name": null,
+                    "workflow_id": null,
+                    "workflow_name": null,
+                    "workflow_step": null
+                },
+                {
+                    "checkin": "Wed, 26 Jun 2023 13:57:33 GMT",
+                    "checkout": "Wed, 26 Jun 2023 15:52:35 GMT",
+                    "external_user_id": null,
+                    "external_user_name": null,
+                    "macro_id": null,
+                    "name": null,
+                    "notes": "Attached template 118",
+                    "status_description": "merged",
+                    "status_id": 9,
+                    "user_id": 24,
+                    "user_name": "Jane Smith",
+                    "workflow_id": 18,
+                    "workflow_name": "Time Off Allocation Request",
+                    "workflow_step": {
+                        "actions": [
+                            {
+                                "approve_to": 8,
+                                "condition": "equal",
+                                "metadata": "approval_hr",
+                                "name": "if rejected",
+                                "notes": "",
+                                "property_type": "",
+                                "reject_to": null,
+                                "type": "condition",
+                                "value": "No"
+                            },
+                            {
+                                "approve_to": 14,
+                                "condition": "equal",
+                                "metadata": "manager",
+                                "name": "when John",
+                                "notes": "",
+                                "property_type": "",
+                                "reject_to": null,
+                                "type": "condition",
+                                "value": "John Smith"
+                            },
+                            {
+                                "approve_to": 5,
+                                "condition": "equal",
+                                "metadata": "manager",
+                                "name": "when Jane",
+                                "notes": "",
+                                "property_type": "",
+                                "reject_to": null,
+                                "type": "condition",
+                                "value": "Jane Doe"
+                            },
+                            {
+                                "approve_to": 13,
+                                "name": "Default action",
+                                "notes": "",
+                                "reject_to": null,
+                                "type": "default"
+                            }
+                        ],
+                        "name": "HR Validation",
+                        "notifications_in": [],
+                        "notifications_out": [],
+                        "order": 3,
+                        "steps": [
+                            {
+                                "action": "approved",
+                                "action_by_email": "jane@domain.com",
+                                "action_by_id": 24,
+                                "action_by_name": "Jane Smith",
+                                "action_timestamp": "Wed, 26 June 2023 15:52:35 GMT",
+                                "actions": [
+                                    {
+                                        "approve_to": 8,
+                                        "condition": "equal",
+                                        "metadata": "approval_hr",
+                                        "name": "if rejected",
+                                        "notes": "",
+                                        "property_type": "",
+                                        "reject_to": null,
+                                        "type": "condition",
+                                        "value": "No"
+                                    },
+                                    {
+                                        "approve_to": 14,
+                                        "condition": "equal",
+                                        "metadata": "manager",
+                                        "name": "when John",
+                                        "notes": "",
+                                        "property_type": "",
+                                        "reject_to": null,
+                                        "type": "condition",
+                                        "value": "John Smith"
+                                    },
+                                    {
+                                        "approve_to": 5,
+                                        "condition": "equal",
+                                        "metadata": "manager",
+                                        "name": "when Jane",
+                                        "notes": "",
+                                        "property_type": "",
+                                        "reject_to": null,
+                                        "type": "condition",
+                                        "value": "Jane Doe"
+                                    },
+                                    {
+                                        "approve_to": 13,
+                                        "name": "Default action",
+                                        "notes": "",
+                                        "reject_to": null,
+                                        "type": "default"
+                                    }
+                                ],
+                                "allow_form_reload": true,
+                                "attach_position": "new-document",
+                                "destinations": [
+                                    {
+                                        "destinations": [
+                                            {
+                                                "type": "internal",
+                                                "user_id": 24
+                                            }
+                                        ],
+                                        "type": "individual"
+                                    },
+                                    {
+                                        "destinations": [
+                                            {
+                                                "type": "internal",
+                                                "user_id": 32
+                                            }
+                                        ],
+                                        "type": "individual"
+                                    }
+                                ],
+                                "document_template_id": 118,
+                                "email_attach_document": true,
+                                "email_subject": "New PTO request to be validated - {{ requester }} - {{ pto_start }}",
+                                "merge_metadata_new_document": true,
+                                "message_body": "Please validate the new PTO request made by {{ requester }}",
+                                "message_type": "text",
+                                "name": "HR Validation",
+                                "notifications_in": [],
+                                "notifications_out": [],
+                                "order": 3,
+                                "position": {
+                                    "x": 48.976,
+                                    "y": 199.712
+                                },
+                                "template_token_id": 84,
+                                "track_metadata": "priority_new",
+                                "type": "form_attachment"
+                            }
+                        ],
+                        "type": "form_attachment",
+                        "uuid": "84bb2b6f-c1cb-4079-90d6-88517c86a2f8"
+                    }
+                },
+                {
+                    "checkin": "Wed, 26 Jun 2023 15:52:35 GMT",
+                    "checkout": "Wed, 26 Jun 2023 15:52:35 GMT",
+                    "external_user_id": null,
+                    "external_user_name": null,
+                    "macro_id": null,
+                    "name": null,
+                    "notes": null,
+                    "status_description": "new version",
+                    "status_id": 1,
+                    "user_id": 24,
+                    "user_name": "Jane Smith",
+                    "workflow_id": null,
+                    "workflow_name": null,
+                    "workflow_step": null
+                },
+                {
+                    "checkin": "Wed, 26 Jun 2023 15:52:35 GMT",
+                    "checkout": "Wed, 26 Jun 2023 18:06:47 GMT",
+                    "external_user_id": null,
+                    "external_user_name": null,
+                    "macro_id": null,
+                    "name": null,
+                    "notes": "Attached template 119",
+                    "status_description": "merged",
+                    "status_id": 9,
+                    "user_id": 18,
+                    "user_name": "Max",
+                    "workflow_id": 18,
+                    "workflow_name": "Time Off Allocation Request",
+                    "workflow_step": {
+                        "actions": [
+                            {
+                                "approve_to": 8,
+                                "condition": "equal",
+                                "metadata": "approval",
+                                "name": "",
+                                "notes": "",
+                                "property_type": "",
+                                "reject_to": null,
+                                "type": "condition",
+                                "value": "No"
+                            },
+                            {
+                                "approve_to": 9,
+                                "name": "Default action",
+                                "notes": "",
+                                "reject_to": null,
+                                "type": "default"
+                            }
+                        ],
+                        "name": "Max Musterman",
+                        "notifications_in": [],
+                        "notifications_out": [],
+                        "order": 13,
+                        "steps": [
+                            {
+                                "action": "approved",
+                                "action_by_email": "max@domain.com",
+                                "action_by_id": 18,
+                                "action_by_name": "Max Musterman",
+                                "action_timestamp": "Wed, 26 June 2023 18:06:47 GMT",
+                                "actions": [
+                                    {
+                                        "approve_to": 8,
+                                        "condition": "equal",
+                                        "metadata": "approval",
+                                        "name": "",
+                                        "notes": "",
+                                        "property_type": "",
+                                        "reject_to": null,
+                                        "type": "condition",
+                                        "value": "No"
+                                    },
+                                    {
+                                        "approve_to": 9,
+                                        "name": "Default action",
+                                        "notes": "",
+                                        "reject_to": null,
+                                        "type": "default"
+                                    }
+                                ],
+                                "allow_form_reload": true,
+                                "attach_position": "new-document",
+                                "destinations": [
+                                    {
+                                        "destinations": [
+                                            {
+                                                "type": "internal",
+                                                "user_id": 18
+                                            }
+                                        ],
+                                        "type": "individual"
+                                    }
+                                ],
+                                "document_template_id": 119,
+                                "email_attach_document": true,
+                                "email_subject": "New PTO request submitted by {{ requester }}",
+                                "merge_metadata_new_document": true,
+                                "message_body": "Please review {{ requester }}'s PTO request",
+                                "message_type": "text",
+                                "name": "Max Musterman",
+                                "notifications_in": [],
+                                "notifications_out": [],
+                                "order": 13,
+                                "position": {
+                                    "x": 148.529,
+                                    "y": 319.067
+                                },
+                                "template_token_id": 85,
+                                "track_metadata": "priority_new",
+                                "type": "form_attachment"
+                            }
+                        ],
+                        "type": "form_attachment",
+                        "uuid": "9d81abe7-718c-4729-907d-16e3f219eb5f"
+                    }
+                },
+                {
+                    "checkin": "Wed, 26 Jun 2023 18:06:47 GMT",
+                    "checkout": "Wed, 26 Jun 2023 18:06:47 GMT",
+                    "external_user_id": null,
+                    "external_user_name": null,
+                    "macro_id": null,
+                    "name": null,
+                    "notes": null,
+                    "status_description": "new version",
+                    "status_id": 1,
+                    "user_id": 18,
+                    "user_name": "Max",
+                    "workflow_id": null,
+                    "workflow_name": null,
+                    "workflow_step": null
+                },
+                {
+                    "checkin": "Wed, 26 Jun 2023 18:06:47 GMT",
+                    "checkout": "Wed, 26 Jun 2023 18:07:26 GMT",
+                    "external_user_id": null,
+                    "external_user_name": null,
+                    "macro_id": 41,
+                    "name": "Approved by system",
+                    "notes": "4509 approved in notification step",
+                    "status_description": "approved",
+                    "status_id": 3,
+                    "user_id": null,
+                    "user_name": null,
+                    "workflow_id": null,
+                    "workflow_name": null,
+                    "workflow_step": {
+                        "actions": [
+                            {
+                                "approve_to": 7,
+                                "name": "Default action",
+                                "notes": "",
+                                "reject_to": null,
+                                "type": "default"
+                            }
+                        ],
+                        "name": "Approved Notification",
+                        "notifications_in": [],
+                        "notifications_out": [],
+                        "order": 9,
+                        "steps": [
+                            {
+                                "actions": [
+                                    {
+                                        "approve_to": 7,
+                                        "name": "Default action",
+                                        "notes": "",
+                                        "reject_to": null,
+                                        "type": "default"
+                                    }
+                                ],
+                                "custom_email_template": true,
+                                "destinations": [
+                                    {
+                                        "destinations": [
+                                            {
+                                                "email": "hr@domain.com",
+                                                "name": "HR",
+                                                "type": "external",
+                                                "use_metadata_fields": false
+                                            }
+                                        ],
+                                        "reminder_action_email": null,
+                                        "type": "individual"
+                                    }
+                                ],
+                                "email_attach_document": true,
+                                "email_subject": "PTO Request for: {{ requester }} approved",
+                                "expire": 2880,
+                                "message_body": "{{ manager }} has approved PTO request for {{ requester }}",
+                                "message_type": "text",
+                                "name": "Approved Notification",
+                                "notifications_in": [],
+                                "notifications_out": [],
+                                "open_document": true,
+                                "order": 9,
+                                "position": {
+                                    "x": 285.102,
+                                    "y": 247.824
+                                },
+                                "type": "notification"
+                            }
+                        ],
+                        "type": "notification",
+                        "uuid": "dda02cb4-326b-499d-936b-e4e20fe97836"
+                    }
+                },
+                {
+                    "checkin": "Wed, 26 Jun 2023 18:07:26 GMT",
+                    "checkout": "Wed, 26 Jun 2023 18:07:57 GMT",
+                    "external_user_id": null,
+                    "external_user_name": null,
+                    "macro_id": 41,
+                    "name": "Approved by system",
+                    "notes": "4509 approved in notification step",
+                    "status_description": "approved",
+                    "status_id": 3,
+                    "user_id": null,
+                    "user_name": null,
+                    "workflow_id": null,
+                    "workflow_name": null,
+                    "workflow_step": {
+                        "actions": [
+                            {
+                                "approve_to": 4,
+                                "name": "Default action",
+                                "notes": "",
+                                "reject_to": null,
+                                "type": "default"
+                            }
+                        ],
+                        "name": "PTO notification",
+                        "notifications_in": [],
+                        "notifications_out": [],
+                        "order": 7,
+                        "steps": [
+                            {
+                                "actions": [
+                                    {
+                                        "approve_to": 4,
+                                        "name": "Default action",
+                                        "notes": "",
+                                        "reject_to": null,
+                                        "type": "default"
+                                    }
+                                ],
+                                "custom_email_template": true,
+                                "destinations": [
+                                    {
+                                        "destinations": [
+                                            {
+                                                "email": "john@domain.com",
+                                                "name": "John Doe",
+                                                "type": "external",
+                                                "use_metadata_fields": false
+                                            }
+                                        ],
+                                        "type": "individual"
+                                    }
+                                ],
+                                "email_attach_document": true,
+                                "email_subject": "PTO Notification: {{ requester }}",
+                                "expire": 2880,
+                                "message_body": "Please see attached document with regards to your PTO Request for {{ type_of_leave }}, starting: {{ pto_start }}, and ending: {{ pto_end }}\n\nBest,\n{{ manager }}",
+                                "message_type": "text",
+                                "name": "PTO notification",
+                                "notifications_in": [],
+                                "notifications_out": [],
+                                "open_document": true,
+                                "order": 7,
+                                "position": {
+                                    "x": 365.906,
+                                    "y": 198.896
+                                },
+                                "type": "notification"
+                            }
+                        ],
+                        "type": "notification",
+                        "uuid": "4521401c-902e-4366-bf3e-0b3fe41e6402"
+                    }
+                },
+                {
+                    "checkin": "Wed, 26 Jun 2023 18:07:57 GMT",
+                    "checkout": "Wed, 26 Jun 2023 18:07:57 GMT",
+                    "external_user_id": null,
+                    "external_user_name": null,
+                    "macro_id": 1,
+                    "name": "Created by system",
+                    "notes": "Folder changed",
+                    "status_description": "modified",
+                    "status_id": 15,
+                    "user_id": null,
+                    "user_name": null,
+                    "workflow_id": null,
+                    "workflow_name": null,
+                    "workflow_step": {
+                        "actions": [
+                            {
+                                "approve_to": 2,
+                                "name": "Default action",
+                                "notes": "",
+                                "reject_to": null,
+                                "type": "default"
+                            }
+                        ],
+                        "name": "Move to PTO folder",
+                        "notifications_in": [],
+                        "notifications_out": [],
+                        "order": 4,
+                        "steps": [
+                            {
+                                "actions": [
+                                    {
+                                        "approve_to": 2,
+                                        "name": "Default action",
+                                        "notes": "",
+                                        "reject_to": null,
+                                        "type": "default"
+                                    }
+                                ],
+                                "destinations": [],
+                                "execute_actions": [
+                                    {
+                                        "target_folder_id": 2,
+                                        "target_folder_name": "PTO requests",
+                                        "type": "move_folder"
+                                    }
+                                ],
+                                "name": "Move to PTO folder",
+                                "notifications_in": [],
+                                "notifications_out": [],
+                                "order": 4,
+                                "position": {
+                                    "x": 440.138,
+                                    "y": 196.919
+                                },
+                                "type": "document_property"
+                            }
+                        ],
+                        "type": "document_property",
+                        "uuid": "8a15e183-a3b4-4306-b32a-acfb486671a2"
+                    }
+                }
+            ],
+            "id": 4509,
+            "member_of": [],
+            "metadata": {
+                "custom_fields": [],
+                "form_data": [
+                    {
+                        "name": "created_from_document_template_id",
+                        "type": "docq_field",
+                        "user_defined": false,
+                        "value": "119"
+                    },
+                    {
+                        "name": "approval",
+                        "type": "dropdown",
+                        "user_defined": false,
+                        "value": "Yes"
+                    },
+                    {
+                        "name": "rejection_reasons",
+                        "type": "textarea",
+                        "user_defined": false,
+                        "value": ""
+                    },
+                    {
+                        "format": {
+                            "element": "MM/dd/yyyy",
+                            "js": "MM/DD/YYYY",
+                            "py": "%m/%d/%Y",
+                            "value": "06/27/2023"
+                        },
+                        "name": "pto_start",
+                        "type": "date",
+                        "user_defined": false,
+                        "value": "2023-06-27"
+                    },
+                    {
+                        "format": {
+                            "element": "MM/dd/yyyy",
+                            "js": "MM/DD/YYYY",
+                            "py": "%m/%d/%Y",
+                            "value": "06/27/2023"
+                        },
+                        "name": "pto_end",
+                        "type": "date",
+                        "user_defined": false,
+                        "value": "2023-06-27"
+                    },
+                    {
+                        "name": "type_of_leave",
+                        "type": "dropdown",
+                        "user_defined": false,
+                        "value": "Personal Time Off (PTO)"
+                    },
+                    {
+                        "name": "notes",
+                        "type": "text",
+                        "user_defined": false,
+                        "value": ""
+                    },
+                    {
+                        "name": "pto_days",
+                        "type": "text",
+                        "user_defined": false,
+                        "value": "1 "
+                    },
+                    {
+                        "name": "approval_hr",
+                        "type": "text",
+                        "user_defined": false,
+                        "value": "Yes"
+                    },
+                    {
+                        "name": "hr_remarks",
+                        "type": "textarea",
+                        "user_defined": false,
+                        "value": "All OK"
+                    },
+                    {
+                        "name": "requester",
+                        "type": "text",
+                        "user_defined": false,
+                        "value": "John Doe"
+                    },
+                    {
+                        "name": "email",
+                        "type": "email",
+                        "user_defined": false,
+                        "value": "john@domain.com"
+                    },
+                    {
+                        "name": "manager",
+                        "type": "dropdown",
+                        "user_defined": false,
+                        "value": "Max Musterman"
+                    }
+                ],
+                "sr_mapping_integration": []
+            },
+            "name": "PTO Request // John Doe // Personal Time Off (PTO) // 2023-06-26",
+            "origins": {
+                "merged_from": {
+                    "documents": []
+                },
+                "originated": {
+                    "merges": [],
+                    "splits": []
+                },
+                "split_from": {
+                    "documents": []
+                }
+            },
+            "pre_approval": [],
+            "priority": "none",
+            "reminders": [],
+            "signature_block": false,
+            "signature_info": null,
+            "source_id": 8,
+            "source_name": "Document template",
+            "tags": [],
+            "workflow_chain": [],
+            "workflow_id": 18,
+            "workflow_name": "Time Off Allocation Request",
+            "workflow_steps": [
+                {
+                    "actions": [
+                        {
+                            "approve_to": 3,
+                            "name": "Default action",
+                            "notes": "",
+                            "reject_to": null,
+                            "type": "default"
+                        }
+                    ],
+                    "name": "Start step",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 1,
+                    "steps": [
+                        {
+                            "actions": [
+                                {
+                                    "approve_to": 3,
+                                    "name": "Default action",
+                                    "notes": "",
+                                    "reject_to": null,
+                                    "type": "default"
+                                }
+                            ],
+                            "name": "Start step",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "order": 1,
+                            "position": {
+                                "x": 2.18,
+                                "y": 263.439
+                            },
+                            "type": "start"
+                        }
+                    ],
+                    "type": "start"
+                },
+                {
+                    "actions": [],
+                    "name": "End step",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 2,
+                    "steps": [
+                        {
+                            "name": "End step",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "order": 2,
+                            "position": {
+                                "x": 511.147,
+                                "y": 197.074
+                            },
+                            "type": "end"
+                        }
+                    ],
+                    "type": "end"
+                },
+                {
+                    "actions": [
+                        {
+                            "approve_to": 8,
+                            "condition": "equal",
+                            "metadata": "approval",
+                            "name": "",
+                            "notes": "",
+                            "property_type": "",
+                            "reject_to": null,
+                            "type": "condition",
+                            "value": "No"
+                        },
+                        {
+                            "approve_to": 9,
+                            "name": "Default action",
+                            "notes": "",
+                            "reject_to": null,
+                            "type": "default"
+                        }
+                    ],
+                    "name": "Jane Doe",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 5,
+                    "steps": [
+                        {
+                            "actions": [
+                                {
+                                    "approve_to": 8,
+                                    "condition": "equal",
+                                    "metadata": "approval",
+                                    "name": "",
+                                    "notes": "",
+                                    "property_type": "",
+                                    "reject_to": null,
+                                    "type": "condition",
+                                    "value": "No"
+                                },
+                                {
+                                    "approve_to": 9,
+                                    "name": "Default action",
+                                    "notes": "",
+                                    "reject_to": null,
+                                    "type": "default"
+                                }
+                            ],
+                            "allow_form_reload": true,
+                            "attach_position": "new-document",
+                            "destinations": [
+                                {
+                                    "destinations": [
+                                        {
+                                            "type": "internal",
+                                            "user_id": 5
+                                        }
+                                    ],
+                                    "type": "individual"
+                                }
+                            ],
+                            "document_template_id": 119,
+                            "email_attach_document": true,
+                            "email_subject": "New PTO request submitted by {{ requester }}",
+                            "merge_metadata_new_document": true,
+                            "message_body": "Please review {{ requester }}'s PTO request",
+                            "message_type": "text",
+                            "name": "Jane Doe",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "order": 5,
+                            "position": {
+                                "x": 149.178,
+                                "y": 211.849
+                            },
+                            "template_token_id": 85,
+                            "track_metadata": "priority_new",
+                            "type": "form_attachment"
+                        }
+                    ],
+                    "type": "form_attachment"
+                },
+                {
+                    "actions": [
+                        {
+                            "approve_to": 7,
+                            "name": "Default action",
+                            "notes": "",
+                            "reject_to": null,
+                            "type": "default"
+                        }
+                    ],
+                    "name": "Not Approved Notification",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 8,
+                    "steps": [
+                        {
+                            "actions": [
+                                {
+                                    "approve_to": 7,
+                                    "name": "Default action",
+                                    "notes": "",
+                                    "reject_to": null,
+                                    "type": "default"
+                                }
+                            ],
+                            "custom_email_template": true,
+                            "destinations": [
+                                {
+                                    "destinations": [
+                                        {
+                                            "email": "hr@domain.com",
+                                            "name": "HR",
+                                            "type": "external",
+                                            "use_metadata_fields": false
+                                        }
+                                    ],
+                                    "reminder_action_email": null,
+                                    "type": "individual"
+                                }
+                            ],
+                            "email_attach_document": true,
+                            "email_subject": "PTO Request for: {{ requester }} NOT approved",
+                            "expire": 2880,
+                            "message_body": "Please see document on why the request was not approved by {{ manager }}",
+                            "message_type": "text",
+                            "name": "Not Approved Notification",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "open_document": true,
+                            "order": 8,
+                            "position": {
+                                "x": 283.928,
+                                "y": 156.282
+                            },
+                            "type": "notification"
+                        }
+                    ],
+                    "type": "notification"
+                },
+                {
+                    "actions": [
+                        {
+                            "approve_to": 7,
+                            "name": "Default action",
+                            "notes": "",
+                            "reject_to": null,
+                            "type": "default"
+                        }
+                    ],
+                    "name": "Approved Notification",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 9,
+                    "steps": [
+                        {
+                            "actions": [
+                                {
+                                    "approve_to": 7,
+                                    "name": "Default action",
+                                    "notes": "",
+                                    "reject_to": null,
+                                    "type": "default"
+                                }
+                            ],
+                            "custom_email_template": true,
+                            "destinations": [
+                                {
+                                    "destinations": [
+                                        {
+                                            "email": "hr@domain.com",
+                                            "name": "HR",
+                                            "type": "external",
+                                            "use_metadata_fields": false
+                                        }
+                                    ],
+                                    "reminder_action_email": null,
+                                    "type": "individual"
+                                }
+                            ],
+                            "email_attach_document": true,
+                            "email_subject": "PTO Request for: {{ requester }} approved",
+                            "expire": 2880,
+                            "message_body": "{{ manager }} has approved PTO request for {{ requester }}",
+                            "message_type": "text",
+                            "name": "Approved Notification",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "open_document": true,
+                            "order": 9,
+                            "position": {
+                                "x": 285.102,
+                                "y": 247.824
+                            },
+                            "type": "notification"
+                        }
+                    ],
+                    "type": "notification"
+                },
+                {
+                    "actions": [
+                        {
+                            "approve_to": 4,
+                            "name": "Default action",
+                            "notes": "",
+                            "reject_to": null,
+                            "type": "default"
+                        }
+                    ],
+                    "name": "PTO notification",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 7,
+                    "steps": [
+                        {
+                            "actions": [
+                                {
+                                    "approve_to": 4,
+                                    "name": "Default action",
+                                    "notes": "",
+                                    "reject_to": null,
+                                    "type": "default"
+                                }
+                            ],
+                            "custom_email_template": true,
+                            "destinations": [
+                                {
+                                    "destinations": [
+                                        {
+                                            "email": "john@domain.com",
+                                            "name": "John Doe",
+                                            "type": "external",
+                                            "use_metadata_fields": true
+                                        }
+                                    ],
+                                    "type": "individual"
+                                }
+                            ],
+                            "email_attach_document": true,
+                            "email_subject": "PTO Notification: {{ requester }}",
+                            "expire": 2880,
+                            "message_body": "Please see attached document with regards to your PTO Request for {{ type_of_leave }}, starting: {{ pto_start }}, and ending: {{ pto_end }}\n\nBest,\n{{ manager }}",
+                            "message_type": "text",
+                            "name": "PTO notification",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "open_document": true,
+                            "order": 7,
+                            "position": {
+                                "x": 365.906,
+                                "y": 198.896
+                            },
+                            "type": "notification"
+                        }
+                    ],
+                    "type": "notification"
+                },
+                {
+                    "actions": [
+                        {
+                            "approve_to": 8,
+                            "condition": "equal",
+                            "metadata": "approval",
+                            "name": "",
+                            "notes": "",
+                            "property_type": "",
+                            "reject_to": null,
+                            "type": "condition",
+                            "value": "No"
+                        },
+                        {
+                            "approve_to": 9,
+                            "name": "Default action",
+                            "notes": "",
+                            "reject_to": null,
+                            "type": "default"
+                        }
+                    ],
+                    "name": "John Smith",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 14,
+                    "steps": [
+                        {
+                            "actions": [
+                                {
+                                    "approve_to": 8,
+                                    "condition": "equal",
+                                    "metadata": "approval",
+                                    "name": "",
+                                    "notes": "",
+                                    "property_type": "",
+                                    "reject_to": null,
+                                    "type": "condition",
+                                    "value": "No"
+                                },
+                                {
+                                    "approve_to": 9,
+                                    "name": "Default action",
+                                    "notes": "",
+                                    "reject_to": null,
+                                    "type": "default"
+                                }
+                            ],
+                            "allow_form_reload": true,
+                            "attach_position": "new-document",
+                            "destinations": [
+                                {
+                                    "destinations": [
+                                        {
+                                            "type": "internal",
+                                            "user_id": 32
+                                        }
+                                    ],
+                                    "type": "individual"
+                                }
+                            ],
+                            "document_template_id": 119,
+                            "email_attach_document": true,
+                            "email_subject": "New PTO request submitted by {{ requester }}",
+                            "merge_metadata_new_document": true,
+                            "message_body": "Please review {{ requester }}'s PTO request",
+                            "message_type": "text",
+                            "name": "John Smith",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "order": 14,
+                            "position": {
+                                "x": 148.416,
+                                "y": 264.459
+                            },
+                            "template_token_id": null,
+                            "track_metadata": "priority_new",
+                            "type": "form_attachment"
+                        }
+                    ],
+                    "type": "form_attachment"
+                },
+                {
+                    "actions": [
+                        {
+                            "approve_to": 8,
+                            "condition": "equal",
+                            "metadata": "approval_hr",
+                            "name": "if rejected",
+                            "notes": "",
+                            "property_type": "",
+                            "reject_to": null,
+                            "type": "condition",
+                            "value": "No"
+                        },
+                        {
+                            "approve_to": 14,
+                            "condition": "equal",
+                            "metadata": "manager",
+                            "name": "when John",
+                            "notes": "",
+                            "property_type": "",
+                            "reject_to": null,
+                            "type": "condition",
+                            "value": "John Smith"
+                        },
+                        {
+                            "approve_to": 5,
+                            "condition": "equal",
+                            "metadata": "manager",
+                            "name": "when Jane",
+                            "notes": "",
+                            "property_type": "",
+                            "reject_to": null,
+                            "type": "condition",
+                            "value": "Jane Doe"
+                        },
+                        {
+                            "approve_to": 13,
+                            "name": "Default action",
+                            "notes": "",
+                            "reject_to": null,
+                            "type": "default"
+                        }
+                    ],
+                    "name": "HR Validation",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 3,
+                    "steps": [
+                        {
+                            "actions": [
+                                {
+                                    "approve_to": 8,
+                                    "condition": "equal",
+                                    "metadata": "approval_hr",
+                                    "name": "if rejected",
+                                    "notes": "",
+                                    "property_type": "",
+                                    "reject_to": null,
+                                    "type": "condition",
+                                    "value": "No"
+                                },
+                                {
+                                    "approve_to": 14,
+                                    "condition": "equal",
+                                    "metadata": "manager",
+                                    "name": "when John",
+                                    "notes": "",
+                                    "property_type": "",
+                                    "reject_to": null,
+                                    "type": "condition",
+                                    "value": "John Smith"
+                                },
+                                {
+                                    "approve_to": 5,
+                                    "condition": "equal",
+                                    "metadata": "manager",
+                                    "name": "when Jane",
+                                    "notes": "",
+                                    "property_type": "",
+                                    "reject_to": null,
+                                    "type": "condition",
+                                    "value": "Jane Doe"
+                                },
+                                {
+                                    "approve_to": 13,
+                                    "name": "Default action",
+                                    "notes": "",
+                                    "reject_to": null,
+                                    "type": "default"
+                                }
+                            ],
+                            "allow_form_reload": true,
+                            "attach_position": "new-document",
+                            "destinations": [
+                                {
+                                    "destinations": [
+                                        {
+                                            "type": "internal",
+                                            "user_id": 24
+                                        }
+                                    ],
+                                    "type": "individual"
+                                },
+                                {
+                                    "destinations": [
+                                        {
+                                            "type": "internal",
+                                            "user_id": 32
+                                        }
+                                    ],
+                                    "type": "individual"
+                                }
+                            ],
+                            "document_template_id": 118,
+                            "email_attach_document": true,
+                            "email_subject": "New PTO request to be validated - {{ requester }} - {{ pto_start }}",
+                            "merge_metadata_new_document": true,
+                            "message_body": "Please validate the new PTO request made by {{ requester }}",
+                            "message_type": "text",
+                            "name": "HR Validation",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "order": 3,
+                            "position": {
+                                "x": 48.976,
+                                "y": 199.712
+                            },
+                            "template_token_id": 84,
+                            "track_metadata": "priority_new",
+                            "type": "form_attachment"
+                        }
+                    ],
+                    "type": "form_attachment"
+                },
+                {
+                    "actions": [
+                        {
+                            "approve_to": 2,
+                            "name": "Default action",
+                            "notes": "",
+                            "reject_to": null,
+                            "type": "default"
+                        }
+                    ],
+                    "name": "Move to PTO folder",
+                    "notifications_in": [],
+                    "notifications_out": [],
+                    "order": 4,
+                    "steps": [
+                        {
+                            "actions": [
+                                {
+                                    "approve_to": 2,
+                                    "name": "Default action",
+                                    "notes": "",
+                                    "reject_to": null,
+                                    "type": "default"
+                                }
+                            ],
+                            "destinations": [],
+                            "execute_actions": [
+                                {
+                                    "target_folder_id": 2,
+                                    "target_folder_name": "PTO requests",
+                                    "type": "move_folder"
+                                }
+                            ],
+                            "name": "Move to PTO folder",
+                            "notifications_in": [],
+                            "notifications_out": [],
+                            "order": 4,
+                            "position": {
+                                "x": 440.138,
+                                "y": 196.919
+                            },
+                            "type": "document_property"
+                        }
+                    ],
+                    "type": "document_property"
+                }
+            ]
+        }
+    ]
+}</code></pre>
+                </div>
+
+                <h3>Response Structure</h3>
+                <table class="response-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>document</code></td>
+                        <td>Array</td>
+                        <td>List of document objects</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].allowed_users</code></td>
+                        <td>Array</td>
+                        <td>List of user IDs allowed to access the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].archived</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if the document is archived</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].aws_s3</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if the document is stored in AWS S3</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].completed</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if the document is completed</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].completed_at</code></td>
+                        <td>String (ISO 8601 datetime)</td>
+                        <td>Date and time when the document was completed</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].current_status_description</code></td>
+                        <td>String</td>
+                        <td>Description of the current status of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].current_status_id</code></td>
+                        <td>Integer</td>
+                        <td>ID of the current status of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].current_step</code></td>
+                        <td>Array</td>
+                        <td>Current step in the workflow</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].document_template_id</code></td>
+                        <td>Integer</td>
+                        <td>ID of the document template</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].docusign_block</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if DocuSign block is enabled</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].docusign_id</code></td>
+                        <td>String or null</td>
+                        <td>DocuSign ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].email_file_copy</code></td>
+                        <td>String or null</td>
+                        <td>Email file copy</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files</code></td>
+                        <td>Array</td>
+                        <td>List of file objects associated with the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].current_version</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if this is the current version of the file</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].digital_certificate</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if the file has a digital certificate</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].extension</code></td>
+                        <td>String</td>
+                        <td>File extension</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].id</code></td>
+                        <td>Integer</td>
+                        <td>File ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].ocr_status</code></td>
+                        <td>String</td>
+                        <td>OCR status of the file</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].prev_file_id</code></td>
+                        <td>Integer or null</td>
+                        <td>ID of the previous version of the file</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].title</code></td>
+                        <td>String</td>
+                        <td>Title of the file</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].uid</code></td>
+                        <td>String</td>
+                        <td>Unique ID of the file</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].files[].uploaded</code></td>
+                        <td>String</td>
+                        <td>Date and time when the file was uploaded</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].folder_path</code></td>
+                        <td>Array</td>
+                        <td>List of folder objects representing the document's path</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].folder_path[].id</code></td>
+                        <td>Integer or null</td>
+                        <td>Folder ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].folder_path[].name</code></td>
+                        <td>String</td>
+                        <td>Folder name</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].gdoc_id</code></td>
+                        <td>String or null</td>
+                        <td>Google Document ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].gdoc_version</code></td>
+                        <td>String or null</td>
+                        <td>Google Document version</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history</code></td>
+                        <td>Array</td>
+                        <td>History of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].checkin</code></td>
+                        <td>String</td>
+                        <td>Check-in date and time</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].checkout</code></td>
+                        <td>String</td>
+                        <td>Check-out date and time</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].external_user_id</code></td>
+                        <td>Integer or null</td>
+                        <td>ID of the external user</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].external_user_name</code></td>
+                        <td>String or null</td>
+                        <td>Name of the external user</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].macro_id</code></td>
+                        <td>Integer or null</td>
+                        <td>ID of the macro</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].name</code></td>
+                        <td>String or null</td>
+                        <td>Name of the history record</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].notes</code></td>
+                        <td>String or null</td>
+                        <td>Notes for the history record</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].status_description</code></td>
+                        <td>String</td>
+                        <td>Description of the status</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].status_id</code></td>
+                        <td>Integer</td>
+                        <td>ID of the status</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].user_id</code></td>
+                        <td>Integer or null</td>
+                        <td>ID of the user who performed the action</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].user_name</code></td>
+                        <td>String or null</td>
+                        <td>Name of the user who performed the action</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].workflow_id</code></td>
+                        <td>Integer or null</td>
+                        <td>ID of the workflow</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].workflow_name</code></td>
+                        <td>String or null</td>
+                        <td>Name of the workflow</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].history[].workflow_step</code></td>
+                        <td>Object or null</td>
+                        <td>Workflow step details</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].id</code></td>
+                        <td>Integer</td>
+                        <td>Document ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].member_of</code></td>
+                        <td>Array</td>
+                        <td>List of group IDs the document is a member of</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].metadata</code></td>
+                        <td>Object</td>
+                        <td>Metadata associated with the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].metadata.custom_fields</code></td>
+                        <td>Array</td>
+                        <td>Custom fields associated with the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].metadata.form_data</code></td>
+                        <td>Array</td>
+                        <td>Form data associated with the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].metadata.sr_mapping_integration</code></td>
+                        <td>Array</td>
+                        <td>Integration mapping for SmartRecruiters</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].name</code></td>
+                        <td>String</td>
+                        <td>Name of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].origins</code></td>
+                        <td>Object</td>
+                        <td>Origin details of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].origins.merged_from</code></td>
+                        <td>Object</td>
+                        <td>Details of documents merged to create this document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].origins.originated</code></td>
+                        <td>Object</td>
+                        <td>Details of documents originated from this document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].origins.split_from</code></td>
+                        <td>Object</td>
+                        <td>Details of documents split to create this document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].pre_approval</code></td>
+                        <td>Array</td>
+                        <td>Pre-approval details of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].priority</code></td>
+                        <td>String</td>
+                        <td>Priority level of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].reminders</code></td>
+                        <td>Array</td>
+                        <td>Reminder details for the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].signature_block</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if a signature block is present</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].signature_info</code></td>
+                        <td>Object or null</td>
+                        <td>Signature information</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].source_id</code></td>
+                        <td>Integer</td>
+                        <td>ID of the source of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].source_name</code></td>
+                        <td>String</td>
+                        <td>Name of the source of the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].tags</code></td>
+                        <td>Array</td>
+                        <td>List of tags associated with the document</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].workflow_chain</code></td>
+                        <td>Array</td>
+                        <td>Workflow chain details</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].workflow_id</code></td>
+                        <td>Integer</td>
+                        <td>ID of the workflow</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].workflow_name</code></td>
+                        <td>String</td>
+                        <td>Name of the workflow</td>
+                    </tr>
+                    <tr>
+                        <td><code>document[].workflow_steps</code></td>
+                        <td>Array</td>
+                        <td>List of workflow steps</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section id="endpoint-document-download">
+                <h2>GET - document-download</h2>
+                <p>This endpoint downloads the specified document in binary format. You may use the document information (<em>GET - document</em> endpoint) to assign a filename, or create a custom one based on the details of the document itself. Use the file ID, along with the document ID, to download a specific version of the document.</p>
+                <h3>Request</h3>
+                <p><strong>URL:</strong> {{url}}/document/download?id={{document_id}}</p>
+                <p><strong>HTTP Request Type:</strong> GET</p>
+
+                <h3>Headers</h3>
+                <table class="header-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">x-access-token</code></td>
+                        <td>String</td>
+                        <td>Access token for authentication <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <h3>Query Parameters</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">id</code></td>
+                        <td>Integer</td>
+                        <td>Document ID <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>file_id</code></td>
+                        <td>String</td>
+                        <td>File ID (optional)</td>
+                    </tr>
+                </table>
+
+                <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl -X GET "{{url}}/document/download?id=644" -H "x-access-token: {{access_token}}"</code></pre>
+
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+
+url = "{{url}}/api/document/download"
+params = {
+    "id": 644
+}
+headers = {
+    "x-access-token": "{{access_token}}"
+}
+
+response = requests.get(url, headers=headers, params=params)
+with open('document.pdf', 'wb') as file:
+    file.write(response.content)</code></pre>
+
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">fetch("{{url}}/api/document/download?id=644", {
+    method: 'GET',
+    headers: {
+        'x-access-token': '{{access_token}}'
+    }
+})
+.then(response => response.blob())
+.then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'document.pdf';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+});</code></pre>
+                </div>
+            </section>
+
+            <section id="endpoint-delete-document">
+                <h2>DELETE - document</h2>
+                <p>This endpoint deletes the specified document. It is important to note that only incomplete documents may be deleted using this endpoint. Once a document reaches the compled status, it is locked for security reasons and may never be deleted via the UI or API. This document may only be deleted by setting up a retention policy that will automatically delete documents after a certain period of time. You must speak with your account manager to get such a retention policy enabled.</p>
+                <h3>Request</h3>
+                <p><strong>URL:</strong> {{url}}/document?id={{document_id}}</p>
+                <p><strong>HTTP Request Type:</strong> DELETE</p>
+
+                <h3>Headers</h3>
+                <table class="header-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">x-access-token</code></td>
+                        <td>String</td>
+                        <td>Access token for authentication <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code class="required">Content-Type</code></td>
+                        <td>String</td>
+                        <td>Content type of the request, should be <code>application/json</code> <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <h3>Query Parameters</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">id</code></td>
+                        <td>Integer</td>
+                        <td>Document ID <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl -X DELETE "{{url}}/document?id=17" -H "x-access-token: {{access_token}}" -H "Content-Type: application/json"</code></pre>
+
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+
+url = "{{url}}/document"
+params = {
+    "id": 17
+}
+headers = {
+    "x-access-token": "{{access_token}}",
+    "Content-Type": "application/json"
+}
+
+response = requests.delete(url, headers=headers, params=params)
+print(response.json())</code></pre>
+
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">fetch("{{url}}/document?id=17", {
+    method: 'DELETE',
+    headers: {
+        'x-access-token': '{{access_token}}',
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data));</code></pre>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+<footer style="background-color: #0a1f42; color: white; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; left: 0;">
+    &copy; 2024 DocQ - NDM Global Inc. All rights reserved.
+</footer>
+</html>

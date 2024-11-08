@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocQ SSO Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+	nav.top-nav {
+            background-color: #0a1f42;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+	    left: 270px;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav.top-nav a {
+            text-decoration: none;
+            color: white;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+        nav.top-nav a:hover {
+            text-decoration: underline;
+        }
+        nav.side-nav {
+            background-color: #0a1f42;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 270px;
+            overflow: auto;
+            z-index: 1000;
+        }
+        nav.side-nav a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 10px;
+            border-bottom: 1px solid #34495e;
+        }
+        nav.side-nav a:hover {
+            background-color: #34495e;
+        }
+        nav.side-nav .submenu a {
+            padding-left: 30px;
+        }
+        main {
+            margin-left: 270px;
+            padding: 60px 20px 20px 20px;
+            flex: 1;
+        }
+        h1, h2, h3, h4 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        section {
+            margin-bottom: 40px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        .parameter-table, .header-table, .response-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .parameter-table th, .parameter-table td, .header-table th, .header-table td, .response-table th, .response-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .parameter-table th, .header-table th, .response-table th {
+            background-color: #f2f2f2;
+        }
+        .required {
+            font-weight: bold;
+            color: red;
+        }
+        .collapsible {
+            background-color: #2c3e50;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+        .active, .collapsible:hover {
+            background-color: #34495e;
+        }
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f9f9f9;
+        }
+	.custom-bullets {
+	    list-style-type: none;
+	    padding-left: 1em;
+	    //color: #d1d5db;
+	}
+	.custom-bullets li {
+	    position: relative;
+	    margin-bottom: 15px;
+	    padding-left: 20px;
+	    font-size: 1rem;
+	    line-height: 1.6;
+	    //color: #ffffff;
+	}
+	.custom-bullets li::before {
+	    content: "–";
+	    position: absolute;
+	    left: 0;
+	    //color: #ffffff;
+	    font-size: 1.5rem;
+	    line-height: 1;
+	    top: 0;
+	}
+	.table-custom {
+	    width: 100%;
+	    border-collapse: collapse;
+	    //font-family: 'Inter', sans-serif;
+	    //background-color: #111;
+	    //color: #fff;
+	}	
+	.table-custom th,
+	.table-custom td {
+	    padding: 12px 15px;
+	    border: 1px solid #333;
+	    text-align: left;
+	}	
+	.table-custom th {
+	    //background-color: #222;
+	    font-weight: bold;
+	    //font-size: 15x;
+	    //color: #fff;
+	    //text-transform: uppercase;
+	}
+	.table-custom td {
+	    //background-color: #111;
+	    //font-family: 'Courier New', Courier, monospace;
+	    //font-size: 14px;
+	}
+	.table-custom a {
+	    //color: #8ab4f8;
+	    text-decoration: none;
+	}
+	.table-custom a:hover {
+	    text-decoration: underline;
+	}
+	.table-custom td code {
+	    //background-color: #222;
+	    padding: 2px 4px;
+	    border-radius: 4px;
+	    //font-family: 'Courier New', Courier, monospace;
+	    //color: #8ab4f8;
+	}
+	/* Adjust column widths */
+	.table-custom td:first-child,
+	.table-custom th:first-child {
+	    width: 20%; /* Adjust this percentage as needed */
+	}	
+	.table-custom td:nth-child(2),
+	.table-custom th:nth-child(2) {
+	    width: 80%; /* Adjust this percentage as needed */
+	}
+        @media (max-width: 767px) {
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            nav .submenu {
+                display: none;
+            }
+            nav a {
+                margin: 5px 0;
+                padding: 10px;
+                border-bottom: 1px solid #34495e;
+            }
+            nav .submenu a {
+                padding-left: 15px;
+            }
+            main {
+                margin-left: 0;
+                margin-top: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+  <nav class="top-nav">
+        <div>
+            <a href="/api">API Documentation</a>
+            <a href="/sso">SSO Documentation</a>
+        </div>
+    </nav>
+  <nav class="side-nav">
+    <center><img src="logo.jpg" width="50%">
+      <h2>SSO Documentation</h2></center>
+        <a href="#introduction">Introduction</a>
+        <a href="#overview">Overview</a>
+        <a href="#idps">Identity Providers</a>
+        <div class="submenu">
+            <a href="#idp-saml">Generic SAML 2.0</a>
+            <a href="#idp-okta">Okta</a>
+        </div>
+    </nav>
+  <main>
+    <div style="background-color: #ffc107; color: #333; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+      <strong>Important:</strong> SSO is a paid feature that is only enabled in your organization if you have subscribed to it. Please contact Sales or your Account Executive to have this enabled for your organization.
+    </div>
+        <section id="introduction">
+            <h1>Introduction</h1>
+            <p>DocQ offers single sign-on (SSO) as a login option to provide additional account security for your team. This allows company administrators to enforce the use of an identity provider when logging into DocQ. SSO improves the onboarding and offboarding experience of the company as the employee only needs a single set of credentials to access DocQm which can also be revoked easily by an administrator.</p>
+	    <p>We support practically all identity providers that support the SAML 2.0 SSO protocol. This documentation has been prepared for commonly used identity providers to help you get started. If you use a different provider, our support team stands ready to support you.</p>
+	    <p>There are some important considerations for enabling SSO within your organization. We suggest reading the overview section so that SSO is properly set up for your users.</p>
+        </section>
+	<div style="border-color: red; border-style: dotted; border-width: 2px; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+	  Please read the important information about how SSO matches user accounts in the <a href="#overview">Overview</a> section.
+	</div>
+	
+        <section id="overview">
+            <h1>Overview</h1>
+            <p>Once SSO has been enabled for your instance, every user within it will automatically be able to log-in using the enabled identity providers (IdP). Each user within an instance is matched to their IdP&apos;s identity using the email address the user is created within DocQ. This means that if an SSO user with the email <code>max@mustermann.com</code> tries to sign in to DocQ, using the SSO option, then their profile within the IdP must have <code>max@mustermann.com</code> as their email address.</p>
+	    <p>The access permissions and groups of users must still be managed within DocQ, to ensure that their ability to access content within DocQ is restricted as required. Please note, this also means that every user that needs to access DocQ must be added to DocQ as well, as SSO will not automatically create users in DocQ. This is because your DocQ plan might have limitations on how many users are allowed within the platform.</p>
+	    <h3>Glossary</h3>
+	    <section id="terminology">
+	      <p>The amount of SSO and SAML acronyms can often be overwhelming. Here's a glossary which you can refer back to at any time:</p>
+	      <ul class="custom-bullets">
+		<li><strong>Identity Provider</strong>, <strong>IdP</strong>, or <strong>IDP</strong> An identity provider is a service that manages user accounts at a company or organization. It can verify the identity of a user and exchange that information with your Supabase project and other applications. It acts as a single source of truth for user identities and access rights. Commonly used identity providers are: Microsoft Active Directory (Azure AD, Microsoft Entra), Okta, Google Workspaces (GSuite), PingIdentity, OneLogin, and many others. There are also self-hosted and on-prem versions of identity providers, and sometimes they are accessible only by having access to a company VPN or being in a specific building.</li>
+		<li><strong>Service Provider</strong>, <strong>SP</strong> This is the software that is asking for user information from an identity provider. DocQ would be the SP in this case.</li>
+		<li><strong>Assertion</strong> An assertion is a statement issued by an identity provider that contains information about a user.</li>
+		<li><strong>EntityID</strong> A globally unique ID (usually a URL) that identifies an Identity Provider or Service Provider across the world.</li>
+		<li><strong>NameID</strong> A unique ID (the email address for DocQ SSO) that identifies a user at an IdP.</li>
+		<li><strong>Metadata</strong> An XML document that describes the features and configuration of an IdP or SP. It can be as a standalone document or as a URL. Usually (but not always) the <code>EntityID</code> is the URL at which you can access the Metadata.</li>
+		<li><strong>Certificate</strong> DocQ trusts assertions from an IdP based on the signature attached to the assertion. The signature is verified according to the certificate present in the Metadata. Note that DocQ requires the certificate to be part of the Metadata in order to complete the setup.</li>
+		<li><strong>Assertion Consumer Service (ACS) URL</strong> This is one of the most important SAML URLs. It is the URL where DocQ will accept assertions from an IdP. Basically, once the identity provider verifies the user&apos;s identity it will redirect to this URL and the redirect request will contain the assertion.</li>
+		<li><strong>RelayState</strong> State used by DocQ to  hold information about a request to verify the identity of a user. This is optional and commonly not used.</li>
+	    </section>
+        </section>
+
+        <section id="idps">
+            <h1>Identity Providers</h1>	    
+            <p>Enterprise-level Single Sign-On (SSO) for an any identity providers compatible with the SAML 2.0 protocol. This is a non-exclusive list of supported SAML 2.0 identity providers:</p>
+	    <ul class="custom-bullets">
+	      <li>Google Workspaces (formerly known as GSuite)</li>
+	      <li>Okta, Auth0</li>
+	      <li>Microsoft Active Directory, Azure Active Directory, Microsoft Entra</li>
+	      <li>PingIdentity</li>
+	      <li>OneLogin</li>
+	    </ul>
+	    <p>If you have issues with these, or other SAML 2.0 IdPs, please open a support ticket.</p>
+            <section id="idp-saml">
+              <h3>Generic SAML 2.0</h3>
+	      <p>The information below should help you configure SSO for your DocQ instance using any IdP that supports SAML 2.0. This generic information is usually enough for most IdPs.</p>
+	      <h4>Setup at IdP</h4>
+	      <p>Below is the SAML 2.0 configuration which you will need to know in order to complete setup at your IdP:</p>
+              <table class="table-custom">
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+                <tr>
+                  <td>EntityID</td>
+                  <td><code>https://auth.docq.app/auth/v1/sso/saml/metadata</code></td>
+                </tr>
+                <tr>
+                  <td>Metadata URL</td>
+                  <td><code>https://auth.docq.app/auth/v1/sso/saml/metadata</code></td>
+                </tr>
+                <tr>
+                  <td>Metadata URL (download)</td>
+                  <td><code>https://auth.docq.app/auth/v1/sso/saml/metadata?download=true</code></td>
+                </tr>
+                <tr>
+                  <td>ACS URL</td>
+                  <td><code>https://auth.docq.app/auth/v1/sso/saml/acs</code></td>
+                </tr>
+                <tr>
+                  <td>NameID</td>
+                  <td><code>emailAddress</code></td>
+                </tr>
+              </table>
+	      <p>Please note that support for Single Logout (SLO) is not available, since it is a rarely supported feature by identity providers.</p>
+	      <p>Append <code>?download=true</code> to the Metadata URL to download the Metadata XML file. This is useful in cases where the identity provider requires a file.</p>
+	      <h4>Setup at DocQ</h4>
+	      <p>Since SSO is a paid feature only enabled on a case-by-case basis, there is currently no front-end interface available to complete the setup of SSO within DocQ. Once the setup is done, you will need to provide the information in the table below to the DocQ support team (or your implementation team in case your instance will have SSO enabled at the very outset, and you have an implementation team from DocQ).</p>
+              <table class="table-custom">
+                <tr>
+                  <th>Information</th>
+                  <th>Format</th>
+                </tr>
+                <tr>
+                  <td>Metadata</td>
+                  <td>Once you setup the information provided above to your IdP, they will provide you with a metadata XML file or url. DocQ requires this in order to complete the SSO setup.<p></p>Please note that if the IdP provides a URL, this URL must be accessible via the Internet, or else the setup will fail. It is also important to note that the IdP should be reachable from any IP address since DocQ may use multiple IPs to perform an authentication connection to the IdP.</td>
+                </tr>
+                <tr>
+                  <td>Domains</td>
+                  <td>Please provide a list of all the domains that your users profiles may utilize within the IdP&apos;s user profiles.<p></p>For example, if the email addresses possible for your users are <code>max@mustermann.com</code> and <code>maxine@mustermann.de</code>, then you must communicate to DocQ that the domains that SSO should be enabled for are <code>mustermann.com</code> and <code>mustermann.de</code>.<p></p>Users withe email addresses that use domains not provided in the list, will not be able to log in using SSO.</td>
+                </tr>
+	      </table>
+	      <p>You can use the <a href="https://secrets.ndmglobal.com" target="_blank">https://secrets.ndmglobal.com</a> service provided by DocQ's parent company, in order to transfer the information above securely. Send the one time link generated by this service to the DocQ support team (or your implementation team in case your instance will have SSO enabled at the very outset, and you have an implementation team from DocQ).</p>
+            <section id="idp-okta">
+              <h2>Okta</h2>
+	      <p>DocQ SSO using Okta via SAML 2.0. Follow the steps below in order to setup DocQ with SSO, while using Okta as your IdP.</p>
+
+	      <p><strong>Step 1: Choose Create App Integration in the Applications dashboard</strong></p>
+	      <p>Navigate to the Applications dashboard of the Okta admin console. Click <em>Create App Integration.</em></p>
+	      <img src="sso-okta-step-01.png" width="70%">
+
+	      <p><strong>Step 2: Choose SAML 2.0 in the app integration dialog</strong></p>
+	      <p>Supabase supports the SAML 2.0 SSO protocol. Choose it from the <em>Create a new app integration</em> dialog.</p>
+	      <img src="sso-okta-step-02.png" width="67%">
+
+	      <p><strong>Step 3: Fill out General Settings</strong></p>
+	      <p>The information you enter here is for visibility into your Okta applications menu. You can choose any values you like. DocQ as a name works well for most use cases.</p>	      
+	      <img src="sso-okta-step-03.png" width="70%">
+
+	      <p><strong>Step 4: Fill out SAML Settings</strong></p>
+	      <p>These settings let DocQ use SAML 2.0 properly with your Okta application. Make sure you enter this information accurately (the screenshot below also shows you what this should look like):</p>
+              <table class="table-custom">
+                <tr>
+                  <th>Setting</th>
+                  <th>Value</th>
+                </tr>
+                <tr>
+                  <td>Single sign-on URL</td>
+                  <td><code>https://auth.docq.app/auth/v1/sso/saml/acs</code></td>
+                </tr>
+                <tr>
+                  <td>Use this for Recipient URL and Destination URL</td>
+                  <td>&#10003;</td>
+                </tr>
+                <tr>
+                  <td>Audience URI (SP Entity ID)</td>
+                  <td><code>https://auth.docq.app/auth/v1/sso/saml/metadata</code></td>
+                </tr>
+                <tr>
+                  <td>Name ID format</td>
+                  <td>EmailAddress</td>
+                </tr>
+                <tr>
+                  <td>Application username</td>
+                  <td><code>Email</code></td>
+                </tr>
+              </table>
+	      <p>&nbsp;</p>
+	      <img src="sso-okta-step-04.png" width="70%">
+	      
+	      <p><strong>Step 5: Fill out Attribute Statements</strong></p>
+	      <p>Attribute Statements allow DocQ to get information about your Okta users on each login.</p>
+	      <p><em><strong>An <code>email</code> to <code>user.email</code> statement is required.</strong></em> Other mappings shown below are optional and configurable depending on your Okta setup.</p>	      
+	      <img src="sso-okta-step-05.png" width="70%">
+
+	      <p><strong>Step 6: Obtain IdP metadata URL (or XML file) and share with DocQ</strong></p>
+	      <p>Before you can use SSO to login users into the DocQ platform, DocQ needs to finalize enabling single sign-on with your Okta application. To enable this, we will need the metadata URL (or XML file) and a list of domains</p>
+	      <p>To do this scroll down to the <em>SAML Signing Certificates</em> section on the <em>Sign On</em> tab of the DocQ application in Okta. Pick the the <em>SHA-2</em> row with an <em>Active</em> status. Click on the <em>Actions</em> dropdown button and then on the <em>View IdP Metadata</em>. This will open up the SAML 2.0 Metadata XML file in a new tab in your browser.</p>
+	      <img src="sso-okta-step-06.png" width="70%">
+	      <p>You now have two options:
+		<ul class="custom-bullets">
+		  <li><strong>Share URL</strong>: Copy this URL and use the the <a href="https://secrets.ndmglobal.com" target="_blank">https://secrets.ndmglobal.com</a> service provided by DocQ's parent company, in order to transfer the information above securely. Send the one time link generated by this service to the DocQ support team (or your implementation team in case your instance will have SSO enabled at the very outset, and you have an implementation team from DocQ). The link usually has this structure: <code>https://&lt;okta-org&gt;.okta.com/apps/&lt;app-id&gt;/sso/saml/metadata</code>. Or, you may,</li>
+		  <li><strong>Share XML file</strong>: Save the XML file and use the the <a href="https://secrets.ndmglobal.com" target="_blank">https://secrets.ndmglobal.com</a> service provided by DocQ's parent company, in order to transfer the information above securely. Send the one time link generated by this service to the DocQ support team (or your implementation team in case your instance will have SSO enabled at the very outset, and you have an implementation team from DocQ).</li>
+		</ul>
+	      <p>Along with the XML file or URL, please also send a list of all domain names that your users profiles may utilize within Okta&apos;s user profiles. For example, if the email addresses possible for your users are <code>max@mustermann.com</code> and <code>maxine@mustermann.de</code>, then you must communicate to DocQ that the domains that SSO should be enabled for are <code>mustermann.com</code> and <code>mustermann.de</code>. You can use the same secrets service provided above to share this information as well</p>
+	      <p>DocQ&apos;s support team will get back in touch with you as soon as the setup of this data is completed. It usually takes 2-3 business days to configure this information for you. After that, you will be able to sign in users via their Okta account. You will even see a login button like in the screenshot below.</p>
+	      <img src="docq-okta-sso.png" width="30%">
+	      <p>Clicking that button will allow your users to authenticate with Okta and then log in</p>
+	    </section>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+<footer style="background-color: #0a1f42; color: white; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; left: 0;">
+    &copy; 2024 DocQ - NDM Global Inc. All rights reserved.
+</footer>
+</html>
