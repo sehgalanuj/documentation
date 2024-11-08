@@ -1,0 +1,41 @@
+/* Style for the pre section */
+.code-block {
+    position: relative;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    overflow: auto;
+    padding: 1em;
+}
+
+/* Style for the actual code element */
+.code-block code {
+    display: block;
+    margin-top: 2em; /* Creates space for the button */
+}
+
+/* Style for the copy button inside <pre> */
+.copy-btn {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.8em;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    z-index: 1;
+}
+
+.copy-btn:hover {
+    background-color: #45A049;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.copy-btn:active {
+    background-color: #388E3C;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
