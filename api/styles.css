@@ -79,6 +79,7 @@ pre {
 .parameter-table th, .parameter-table td, .header-table th, .header-table td, .response-table th, .response-table td {
     border: 1px solid #ddd;
     padding: 8px;
+    vertical-align: top;
 }
 .parameter-table th, .header-table th, .response-table th {
     background-color: #f2f2f2;
