@@ -24,6 +24,7 @@ COPY ./api/create-document-template.jpg /usr/share/nginx/html/api
 COPY ./api/custom-metadata.jpg /usr/share/nginx/html/api
 COPY ./api/introduction.html /usr/share/nginx/html/api
 COPY ./api/get-document-pagination.html /usr/share/nginx/html/api
+COPY ./api/get-documenttemplate.html /usr/share/nginx/html/api
 
 RUN mkdir -p /usr/share/nginx/html/sso
 COPY ./sso/docq-okta-sso.png /usr/share/nginx/html/sso

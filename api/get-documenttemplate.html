@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocQ API Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+            <section id="endpoint-document-template">
+                <h2>GET - document_template</h2>
+                <p>This endpoint retrieves the details of a specific document template.</p>
+                <h3>Request</h3>
+                <p><strong>URL:</strong> {{url}}/documenttemplate?id={{template_id}}</p>
+                <p><strong>HTTP Request Type:</strong> GET</p>
+                <p>Replace <code>{{url}}</code> with your specific DocQ domain. For example, if your domain is <code>ndm.docq.app</code>, replace <code>{{url}}</code> with <code>https://ndm.docq.app/api</code>.</p>
+
+                <h3>Headers</h3>
+                <table class="header-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">x-access-token</code></td>
+                        <td>String</td>
+                        <td>Access token for authentication <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code class="required">Content-Type</code></td>
+                        <td>String</td>
+                        <td>Content type of the request, should be <code>application/json</code> <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <h3>Query Parameters</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">id</code></td>
+                        <td>Integer</td>
+                        <td>Document Template ID <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl -X GET "{{url}}/document_template?id=117" -H "x-access-token: {{access_token}}" -H "Content-Type: application/json"</code></pre>
+
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+
+url = "{{url}}/document_template"
+params = {
+    "id": 117
+}
+headers = {
+    "x-access-token": "{{access_token}}",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())</code></pre>
+
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">fetch("{{url}}/document_template?id=117", {
+    method: 'GET',
+    headers: {
+        'x-access-token': '{{access_token}}',
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data));</code></pre>
+                </div>
+
+                <button type="button" class="collapsible">Sample Response</button>
+                <div class="content">
+                  <pre><code class="language-json">[
+    {
+        "id": 3,
+        "name": "NDA",
+        "workflow_id": 2
+        "document_template_content_id": 1782,
+        "document_template_file_id": 496,
+        "filename": "(Approved) Mutual NDA.docx",
+        "filetype": "docx",
+        "priority": "urgent",
+        "fields": [
+            {
+                "id": "full_name",
+                "label": "Full Name",
+                "required": true,
+                "type": "text",
+                "uuid": "4bae1f21-9f25-4f29-8725-bf958d86b98f"
+            },
+            {
+                "hint": "",
+                "id": "title",
+                "label": "Title",
+                "required": false,
+                "type": "text",
+                "uuid": "af9e93eb-7044-4d34-b315-59ea01f33a29"
+            },
+            {
+                "date_range": {
+                    "max_date": null,
+                    "max_days": null,
+                    "max_type": "off",
+                    "min_date": null,
+                    "min_days": null,
+                    "min_type": "off"
+                },
+                "format": {
+                    "element": "MM/dd/yyyy",
+                    "js": "MM/DD/YYYY",
+                    "py": "%m/%d/%Y"
+                },
+                "hash_value": false,
+                "hide_value": false,
+                "hint": "",
+                "id": "effective_date",
+                "initial_value": "",
+                "label": "Effective Date",
+                "read_only": false,
+                "regex": [],
+                "required": false,
+                "type": "date",
+                "uuid": "721eddc2-10eb-47b1-95e3-d64e2a5f9d40"
+            },
+            {
+                "confirm_email": false,
+                "hash_value": false,
+                "hide_value": false,
+                "hint": "",
+                "id": "email",
+                "initial_value": "",
+                "label": "Email",
+                "read_only": false,
+                "regex": [],
+                "required": true,
+                "type": "email",
+                "uuid": "2ea57606-6490-4f61-8d52-b46e6513991a"
+            },
+            {
+                "hash_value": false,
+                "hide_value": false,
+                "hint": "",
+                "id": "internal_name",
+                "initial_value": "",
+                "label": "Internal Signer Name",
+                "options": [
+                    {
+                        "label": "Max Mustermann",
+                        "value": "max"
+                    },
+                    {
+                        "label": "Maxine Musterfrau",
+                        "value": "maxine"
+                    }
+                ],
+                "read_only": false,
+                "required": true,
+                "type": "dropdown",
+                "uuid": "c1f09717-8a92-4a49-89ce-5308065bd8ca"
+            }
+        ],
+        "groups": [
+            15,
+            6
+        ]
+        "file": "VGhpcyBpcyBhIHRleHQ="
+    }
+]</code></pre>
+                </div>
+
+                <h3>Response Structure</h3>
+                <table class="response-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>[]</code></td>
+                        <td>Array</td>
+                        <td>The root array contains all templates that match the query. If, for example, you have queried template ID 3, then the array response will have only one entry corresponding to the template ID 3, if this template exists.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].id</code></td>
+                        <td>Integer</td>
+                        <td>Unique identifier of the document template.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].name</code></td>
+                        <td>String</td>
+                        <td>Name of the document template</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].workflow_id</code></td>
+                        <td>Integer</td>
+                        <td>The workflow assigned to this template. The assigned workflow will be triggered if a form associated with the template is used to generate a document.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].document_template_content_id</code></td>
+                        <td>Integer</td>
+                        <td>The default content access group assigned to a file created from this template.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].document_tempalte_file_id</code></td>
+                        <td>Integer</td>
+                        <td>ID of the file used for the template.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].filename</code></td>
+                        <td>String</td>
+                        <td>Name of the source file used for this template.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].filetype</code></td>
+                        <td>String</td>
+                        <td>Currently limited to docx or pdf types.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].priority</code></td>
+                        <td>String</td>
+                        <td>One of: urgent, high, normal, low, none.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].fields</code></td>
+                        <td>Array</td>
+                        <td>List of fields included in the template. The JSON structure of each field within the template is dependent upon the type of fields. Here we will list the JSON fields that will always be part of the response.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].fields[].id</code></td>
+                        <td>String</td>
+                        <td>ID of the field. This is the variable name used in the document.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].fields[].label</code></td>
+                        <td>String</td>
+                        <td>Label of the field. This is just a visual descriptor of the field.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].fields[].required</code></td>
+                        <td>Boolean</td>
+                        <td>Indicates if the field is mandatory.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].fields[].type</code></td>
+                        <td>String</td>
+                        <td>This can be one of: text, email, number, date, boolean, textarea, dropdown, checkbox, customtext, currency, clause, signature.</td>
+                    </tr>
+                    <tr>
+                        <td><code>[].groups</code></td>
+                        <td>Array</td>
+                        <td>An array of strings containing the group IDs that will be assigned to the document generated from this template.</td>
+                    </tr>
+                </table>
+            </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+
+
+</body>
+</html>
