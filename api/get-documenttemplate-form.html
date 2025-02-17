@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocQ API Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+            <section id="endpoint-document-template">
+                <h2>GET - document_template</h2>
+                <p>This endpoint retrieves the data necessary to construct form URLs for a particular template.</p>
+                <h3>Request</h3>
+                <p><strong>URL:</strong> {{url}}/documenttemplate/formToken?template_id={{template_id}}</p>
+                <p><strong>HTTP Request Type:</strong> GET</p>
+                <p>Replace <code>{{url}}</code> with your specific DocQ domain. For example, if your domain is <code>ndm.docq.app</code>, replace <code>{{url}}</code> with <code>https://ndm.docq.app/api</code>.</p>
+
+                <h3>Headers</h3>
+                <table class="header-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">x-access-token</code></td>
+                        <td>String</td>
+                        <td>Access token for authentication <span class="required">(required)</span></td>
+                    </tr>
+                    <tr>
+                        <td><code class="required">Content-Type</code></td>
+                        <td>String</td>
+                        <td>Content type of the request, should be <code>application/json</code> <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <h3>Query Parameters</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="required">template_id</code></td>
+                        <td>Integer</td>
+                        <td>Document Template ID <span class="required">(required)</span></td>
+                    </tr>
+                </table>
+
+                <button type="button" class="collapsible">Examples</button>
+                <div class="content">
+                    <h4>cURL</h4>
+                    <pre><code class="language-bash">curl --location '{{url}}/documenttemplate/formToken?template_id=3' --header 'x-access-token: {{access_token}}' --header 'Content-Type: application/json'</code></pre>
+		    
+                    <h4>Python (requests)</h4>
+                    <pre><code class="language-python">import requests
+import json
+
+url = "{{url}}/documenttemplate/formToken?template_id=3"
+
+payload = {}
+headers = {
+  'x-access-token': '{{access_token}}',
+  'Content-Type': 'application/json'
+}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+
+print(response.text)</code></pre>
+
+                    <h4>JavaScript (fetch)</h4>
+                    <pre><code class="language-javascript">const myHeaders = new Headers();
+myHeaders.append("x-access-token", "{{access_token}}");
+myHeaders.append("Content-Type", "application/json");
+
+const requestOptions = {
+  method: "GET",
+  headers: myHeaders,
+  redirect: "follow"
+};
+
+fetch("{{url}}/documenttemplate/formToken?template_id=3", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));</code></pre>
+                </div>
+
+                <button type="button" class="collapsible">Sample Response</button>
+                <div class="content">
+                  <pre><code class="language-json">{
+    "tokens": [
+        {
+            "active": true,
+            "allow_preview": true,
+            "allow_save_data": false,
+            "continuos_form": false,
+            "created": "2021-06-14T14:13:08.815Z",
+            "custom_url": "6912c4ff-fd43-4200-9ec7-f52f6fe53001",
+            "document_template_id": 3,
+            "edit_email_fields": [],
+            "expire": null,
+            "id": 4,
+            "name": "NDA",
+            "preload_last_data": "block",
+            "preview_sign": false,
+            "saved_data_expire": 72,
+            "sr_module": {
+                "request_emailrefid": false
+            },
+            "token": "eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIiLCJpYXQiOjE2MjM2Nzk5ODgsImp0aSI6Ilp3c2RHSDA2SEljZ1pOQXdqQlFzY2ciLCJuYmYiOjE2MjM2Nzk5ODgsInRlbXBsYXRlX2lkIjozLCJ0b2tlbl9pZCI6NH0.Ckdl8XPJpr8k1a-gyIa7D3Ck4PSeaVvt2_RXXHjU-TCsIkoBPdbZDGTxXKBkX8c0Uq1ep-qJDTdCUjAT32h78eG_JaFa483Srohy9NNfp5X2OTWw2E1bYYiLbUKVLl7Ldbwl24DvG9PXtN9H6QCNObNctjLaXq5mCJb5cwZ395umz_MmdokJGYehdI9jJV8b6XkWr3Lt8CA21qI9SRbXCOwh0YUs3myn0bf6ppbNJNyTx0ifPjTY7Yhg3EV1Ew-5u2arL_hLRmHrEFz_UoTxCE4gGPeDUBfKCdOZW6f56dZEThB6imE9elvW_sv7dOn594-Gk4egjTC8J8kG4W_7Zg",
+            "visibility": "both"
+        }
+    ]
+}</code></pre>
+                </div>
+
+                <h3>Response Structure</h3>
+                <table class="response-table">
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>tokens.[]</code></td>
+                        <td>Array</td>
+                        <td>The array contains all forms for the template ID queried. If, for example, you have queried template ID 3, then the array response will have only the form links configured for this template.</td>
+                    </tr>
+                    <tr>
+                        <td><code>active</code></td>
+                        <td>Boolean</td>
+                        <td>Whether the form token is active or not.</td>
+                    </tr>
+                    <tr>
+                        <td><code>allow_preview</code></td>
+                        <td>Boolean</td>
+                        <td>Whether the form allows obtaining a preview of the document that will be generated, before the form is submitted.</td>
+                    </tr>
+                    <tr>
+                        <td><code>allow_save_data</code></td>
+                        <td>Boolean</td>
+                        <td>Whether the filled data can be saved to a token, for later reloading the data.</td>
+                    </tr>
+                    <tr>
+                        <td><code>custom_url</code></td>
+                        <td>String</td>
+                        <td>A custom short token that can be used to load the form.<p/>
+
+			  For example, if the <code>custom_url</code> has the value <code>6912c4ff-fd43-4200-9ec7-f52f6fe53001</code><p/>
+			  and your DocQ instance is hosted at the endpoint <code>https://ndm.docq.app</code>, then your form url would be:<br><code>https://forms.docq.app/?domain=ndm.docq.app&form=6912c4ff-fd43-4200-9ec7-f52f6fe53001</code><p/>
+			  It is important to note that this field will only be filled if the <i>Link Format</i> is set to <i>Short</i> in the form's configuration within the DocQ UI.</td>
+                    </tr>
+                    <tr>
+                        <td><code>document_template_id</code></td>
+                        <td>Integer</td>
+                        <td>ID of the document tempalte associated with this form.</td>
+                    </tr>
+                    <tr>
+                        <td><code>expire</code></td>
+                        <td>String (ISO 8601 datetime)</td>
+                        <td>Expiry date of the form.</td>
+                    </tr>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td>Integer</td>
+                        <td>The ID of the form.</td>
+                    </tr>
+                    <tr>
+                        <td><code>name</code></td>
+                        <td>String</td>
+                        <td>The <i>Link</i> Name configured for this form within the DocQ UI.</td>
+                    </tr>
+                    <tr>
+                        <td><code>token</code></td>
+                        <td>String</td>
+                        <td>The long-format token that can be used to load the form.<p/>
+
+			  For example, if the <code>custom_url</code> has the value<code>:<br>eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIiLCJpYXQiOjE2MjM2Nzk5ODgsImp0aSI6Ilp3c2RHSDA2SEljZ1pOQXdqQlFzY2ciLCJuYmYiOjE2MjM2Nzk5ODgsInRlbXBsYXRlX2lkIjozLCJ0b2tlbl9pZCI6NH0.Ckdl8XPJpr8k1a-gyIa7D3Ck4PSeaVvt2_RXXHjU-TCsIkoBPdbZDGTxXKBkX8c0Uq1ep-qJDTdCUjAT32h78eG_JaFa483Srohy9NNfp5X2OTWw2E1bYYiLbUKVLl7Ldbwl24DvG9PXtN9H6QCNObNctjLaXq5mCJb5cwZ395umz_MmdokJGYehdI9jJV8b6XkWr3Lt8CA21qI9SRbXCOwh0YUs3myn0bf6ppbNJNyTx0ifPjTY7Yhg3EV1Ew-5u2arL_hLRmHrEFz_UoTxCE4gGPeDUBfKCdOZW6f56dZEThB6imE9elvW_sv7dOn594-Gk4egjTC8J8kG4W_7Zg</code><p/>and your DocQ instance is hosted at the endpoint <code>https://ndm.docq.app</code>, then your form url would be:<br><code>https://forms.docq.app/?domain=ndm.docq.app&form=eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIiLCJpYXQiOjE2MjM2Nzk5ODgsImp0aSI6Ilp3c2RHSDA2SEljZ1pOQXdqQlFzY2ciLCJuYmYiOjE2MjM2Nzk5ODgsInRlbXBsYXRlX2lkIjozLCJ0b2tlbl9pZCI6NH0.Ckdl8XPJpr8k1a-gyIa7D3Ck4PSeaVvt2_RXXHjU-TCsIkoBPdbZDGTxXKBkX8c0Uq1ep-qJDTdCUjAT32h78eG_JaFa483Srohy9NNfp5X2OTWw2E1bYYiLbUKVLl7Ldbwl24DvG9PXtN9H6QCNObNctjLaXq5mCJb5cwZ395umz_MmdokJGYehdI9jJV8b6XkWr3Lt8CA21qI9SRbXCOwh0YUs3myn0bf6ppbNJNyTx0ifPjTY7Yhg3EV1Ew-5u2arL_hLRmHrEFz_UoTxCE4gGPeDUBfKCdOZW6f56dZEThB6imE9elvW_sv7dOn594-Gk4egjTC8J8kG4W_7Zg</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>visibility</code></td>
+                        <td>String</td>
+                        <td>The visibility configured for this form, which can be one of:<p/>
+			  <ul>
+			    <li><code>external</code> - The form link is only available for external use, i.e. to users not logged in to DocQ.</li>
+			    <li><code>internal</code> - The form link is only available for internal use, i.e. to users logged in to DocQ.</li>
+			    <li><code>both</code> - The form link is available for internal and external use.</li>
+			  </ul>
+			</td>
+                    </tr>
+                </table>
+            </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-http.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+
+
+</body>
+</html>
